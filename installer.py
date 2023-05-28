@@ -12,7 +12,7 @@ os.system('pip install -r requirements.txt')
 #os.chdir("../")
 
 #Make folders
-FOLDERS = []
+FOLDERS = ["Data/Settings"]
 for folder in FOLDERS:
     try: os.mkdir(folder)
     except: None
