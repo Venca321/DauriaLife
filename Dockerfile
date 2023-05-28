@@ -14,7 +14,7 @@ RUN apk update && apk add --no-cache \
 #Install requrements.txt
 COPY requirements.txt requirements.txt
 RUN pip install --upgrade pip setuptools wheel
-RUN pip install -r requirements.txt
+RUN python3 installer.py
 
 #Copy all files
 COPY . .
