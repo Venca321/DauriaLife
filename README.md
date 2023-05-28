@@ -1,5 +1,6 @@
 # DauriaLife
 
+
 ## English:
 
 ### About project:
@@ -10,7 +11,8 @@ Coming soon
 
 ### How to run:
 
-Coming soon
+Build docker using `docker build . -t dauria-life`
+Run docker using `docker run dauria-life`
 
 ---
 
@@ -25,6 +27,7 @@ Coming soon
 - 📧 **contact@vaclavparma.cz**
 - 🌐 [https://vaclavparma.cz](https://vaclavparma.cz)
 
+---
 
 ## Česky:
 
@@ -36,7 +39,8 @@ Již brzy
 
 ### Jak spustit:
 
-Již brzy
+Postavte docker pomocí `docker build . -t dauria-life`
+Spusťte docker pomocí `docker run dauria-life`
 
 ---
 

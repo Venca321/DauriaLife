@@ -1,0 +1,45 @@
+
+"""
+Pytest for core_helper.py
+"""
+
+import sys, os
+sys.path.append(f"{os.getcwd()}") #Importing from "Backend/" fix
+from Backend.core_helper import *
+
+class Test_loaded_data():
+    def test_system(self):
+        assert Loaded_data.SYSTEM_DATA
+
+    def test_settings(self):
+        #assert Loaded_data.SETTINGS_DATA
+        pass
+
+    def test_env(self):
+        assert Loaded_data.ENV_DATA
+
+class Test_system_data():
+    def test_version(self):
+        assert isinstance(Data.System.version, str)
+
+    def test_location(self):
+        assert isinstance(Data.System.location, str)
+    
+class Test_database_data():
+    def test_version(self):
+        assert isinstance(Data.Database.version, str)
+
+    def test_name(self):
+        assert isinstance(Data.Database.name, str)
+
+    def test_tables(self):
+        assert isinstance(Data.Database.tables, list)
+
+    def test_host(self):
+        assert isinstance(Data.Database.host, str)
+
+    def test_user(self):
+        assert isinstance(Data.Database.user, str)
+
+    def test_password(self):
+        assert isinstance(Data.Database.password, str)

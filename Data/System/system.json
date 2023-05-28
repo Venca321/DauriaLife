@@ -1,3 +1,21 @@
 {
-    
+    "version": "PRE V.0.0",
+    "database": {
+        "version": "V.0.0",
+        "name": "Dauriadb",
+        "tables": [
+            "system_info",
+            "users",
+            "session_tokens",
+            "user_roles",
+            "user_settings",
+            "messages",
+            "user_calendars",
+            "calendar",
+            "user_todos",
+            "todo",
+            "notes",
+            "records"
+        ]
+    }
 }
