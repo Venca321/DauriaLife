@@ -4,6 +4,7 @@ cache/
 .pytest_cache/
 
 .vscode/
+Working/
 
 .env
 settings.json

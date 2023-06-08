@@ -25,7 +25,7 @@ class Data():
         """
         System settings
         """
-        pass
+        open_weather_api_key:str = Loaded_data.ENV_DATA["open_weather_api_key"]
 
     class Database():
         """

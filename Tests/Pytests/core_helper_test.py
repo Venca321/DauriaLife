@@ -24,6 +24,10 @@ class Test_system_data():
 
     def test_location(self):
         assert isinstance(Data.System.location, str)
+
+class Test_settings():
+    def test_open_weather_api_key(self):
+        assert isinstance(Data.Settings.open_weather_api_key, str)
     
 class Test_database_data():
     def test_version(self):
