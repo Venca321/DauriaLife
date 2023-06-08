@@ -18,6 +18,9 @@ class Test_loaded_data():
     def test_env(self):
         assert Loaded_data.ENV_DATA
 
+    def test_env(self):
+        assert Loaded_data.WEATHER_SETTINGS
+
 class Test_system_data():
     def test_version(self):
         assert isinstance(Data.System.version, str)
@@ -47,3 +50,13 @@ class Test_database_data():
 
     def test_password(self):
         assert isinstance(Data.Database.password, str)
+
+class Test_weather_settings():
+    def test_max_calls_per_minute(self):
+        assert isinstance(Data.weather.max_calls_per_minute, int)
+
+    def test_update_time_minutes(self):
+        assert isinstance(Data.weather.update_time_minutes, int)
+
+    def test_cities(self):
+        assert isinstance(Data.weather.cities, dict)

@@ -9,6 +9,7 @@ class Loaded_data():
     SYSTEM_DATA = json.load(open(f"{os.getcwd()}/Data/System/system.json"))
     SETTINGS_DATA = json.load(open(f"{os.getcwd()}/Data/Settings/settings.json"))
     ENV_DATA = dotenv.dotenv_values(f"{os.getcwd()}/Data/Settings/.env")
+    WEATHER_SETTINGS = json.load(open(f"{os.getcwd()}/Data/System/weather.json"))
 
 class Data():
     """
@@ -37,3 +38,11 @@ class Data():
         host:str = Loaded_data.ENV_DATA["database_host"]
         user:str = Loaded_data.ENV_DATA["database_user"]
         password:str = Loaded_data.ENV_DATA["database_password"]
+
+    class weather():
+        """
+        Weather settings
+        """
+        max_calls_per_minute:int = Loaded_data.WEATHER_SETTINGS["max_calls_per_minute"]
+        update_time_minutes:int = Loaded_data.WEATHER_SETTINGS["update_time_minutes"]
+        cities:dict = Loaded_data.WEATHER_SETTINGS["cities"]
