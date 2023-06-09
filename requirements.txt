@@ -6,4 +6,5 @@ mysql-connector-python==8.0.33
 Flask==2.2.3
 Flask-Cors==3.0.10
 
+requests==2.27.1
 geopy==2.3.0
