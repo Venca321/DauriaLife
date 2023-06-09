@@ -4,6 +4,9 @@ import time, requests, mysql.connector
 
 class Core():
     def outputer(output:bool, ON:bool, name:str, function):
+        """
+        Test and process output
+        """
         if output: print(f"     {name} ...", end="\r")
         if ON:
             try:
@@ -42,16 +45,25 @@ class Tests():
         if len(needed_tables) > 0: raise
 
     def flask():
+        """
+        Test flask server
+        """
         url = 'http://localhost:5000/api/version'
         r = requests.get(url)
         if not r.json()["version"] == Data.System.version: raise
 
     def sveltekit():
+        """
+        Test sveltekit server
+        """
         url = 'http://localhost:5173/api/status'
         r = requests.get(url)
         if not r.json()["status"] == "ok": raise
 
     def overall():
+        """
+        Test overall server
+        """
         """
         r = requests.get(f"{ngrok_url}/api/status")
         if not r.json()["status"] == "ok": raise
@@ -60,7 +72,7 @@ class Tests():
 
     def run(output:bool = False):
         """
-        Otestuje funkčnost systému
+        Run all tests
         """
         DATABASE = False #if False test will be skipped
         FLASK = False
@@ -72,9 +84,9 @@ class Tests():
 
         if output: print(f" Testing system:{colors.NORMAL} ")
 
-        time.sleep(0.6) # Tady přidejte delay, pokud mátemálo výkonný systém
+        time.sleep(0.6)
 
-        #Database_connection
+        #Database
         if not Core.outputer(output, DATABASE, "Database server", "Tests.database()"):
             errors += 1
         done_tests += 1
@@ -89,7 +101,7 @@ class Tests():
             errors += 1
         done_tests += 1
 
-        #Sveltekit přes ngrok
+        #Overall
         if not Core.outputer(output, OVERALL, "Overall server", "Tests.overall()"):
             errors += 1
         done_tests += 1
