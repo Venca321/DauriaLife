@@ -1,7 +1,7 @@
 
 from geopy.geocoders import Nominatim
 from Backend.core_helper import Data
-import requests, datetime, time, sqlite3
+import requests, datetime, time, sqlite3, json
 
 API_KEY = Data.Settings.open_weather_api_key
 
@@ -40,15 +40,15 @@ class weather():
                 weather_forecast.append([
                     date_var,
                     time_var,
-                    record["main"]["temp"],
-                    record["main"]["feels_like"],
-                    record["main"]["pressure"],
-                    record["main"]["humidity"],
-                    record["weather"][0]["description"],
-                    record["clouds"]["all"],
-                    record["wind"]["speed"],
-                    record["wind"]["deg"],
-                    rain,
+                    int(record["main"]["temp"]),
+                    int(record["main"]["feels_like"]),
+                    int(record["main"]["pressure"]),
+                    int(record["main"]["humidity"]),
+                    int(record["weather"][0]["id"]),
+                    int(record["clouds"]["all"]),
+                    int(record["wind"]["speed"]),
+                    int(record["wind"]["deg"]),
+                    int(rain),
                     sunrise,
                     sunset
                 ])
@@ -87,7 +87,7 @@ class weather():
                     feel_temp INTEGER,
                     pressure INTEGER,
                     humidity INTEGER,
-                    weather_desc TEXT,
+                    weather_id INTEGER,
                     clouds INTEGER,
                     wind_speed INTEGER,
                     wind_deg INTEGER,
@@ -105,7 +105,7 @@ class weather():
                     INSERT INTO {table_name} 
                     (
                     date, time, temp, feel_temp, pressure, humidity, 
-                    weather_desc, clouds, wind_speed, wind_deg, rain, 
+                    weather_id, clouds, wind_speed, wind_deg, rain, 
                     sunrise, sunset
                     )
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -134,3 +134,9 @@ class weather():
         connection.close()
 
         return rows
+
+    def decode_weather_id(lang:str, id:int):
+        if lang == "cz":
+            lang_file = json.load(open("Data/Language/Czech/weather.json"))
+
+        return lang_file[str(id)]
