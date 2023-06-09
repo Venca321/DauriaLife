@@ -11,9 +11,9 @@ Coming soon
 
 ### How to run:
 
-You will need Docker installed
-Build docker using `docker build . -t dauria-life`
-Run docker using `docker run dauria-life`
+You will need Docker installed \
+Build docker using `docker build . -t dauria-life` \
+Run docker using `docker run dauria-life` \
 
 ---
 
@@ -40,9 +40,9 @@ Již brzy
 
 ### Jak spustit:
 
-Budete potřebovat nainstalovaný Docker
-Postavte docker pomocí `docker build . -t dauria-life`
-Spusťte docker pomocí `docker run dauria-life`
+Budete potřebovat nainstalovaný Docker \
+Postavte docker pomocí `docker build . -t dauria-life` \
+Spusťte docker pomocí `docker run dauria-life` \
 
 ---
 

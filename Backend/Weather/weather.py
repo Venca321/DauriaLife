@@ -1,6 +1,5 @@
 
 from geopy.geocoders import Nominatim
-from collections import defaultdict
 from Backend.core_helper import Data
 import requests, datetime, time, sqlite3
 
