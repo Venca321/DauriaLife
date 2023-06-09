@@ -1,8 +1,8 @@
 
 from geopy.geocoders import Nominatim
 from collections import defaultdict
-from Backend.core import Data
-import requests, datetime, time
+from Backend.core_helper import Data
+import requests, datetime, time, sqlite3
 
 API_KEY = Data.Settings.open_weather_api_key
 
@@ -30,55 +30,108 @@ class weather():
             sunset = datetime.datetime.fromtimestamp(data["city"]["sunset"]).strftime("%H:%M:%S")
             raw_weather = data["list"]
 
-            weather_forecast = defaultdict(dict)
+            weather_forecast = []
             for record in raw_weather:
                 date_time = datetime.datetime.fromtimestamp(record["dt"]) #Datetime
                 date_var = date_time.strftime("%d-%m-%Y") #21-4-2023
                 time_var = date_time.strftime("%H:%M:%S") #16:24:00
-
-                temp = record["main"]["temp"] #Real temp
-                feel_temp = record["main"]["feels_like"] #Feels like temp
-                pressure = record["main"]["pressure"]
-                humidity = record["main"]["humidity"]
-                weather_desc = record["weather"][0]["description"] #Description of weather in lang
-                clouds = record["clouds"]["all"] #Clouds %
-                wind_speed = record["wind"]["speed"]
-                wind_deg = record["wind"]["deg"]
                 try: rain = record["rain"]["3h"] #mm of rain for last 3h
-                except: rain = None
+                except: rain = 0
 
-                weather_forecast[date_var][time_var] = {
-                    "temp": temp,
-                    "feel_temp": feel_temp,
-                    "pressure": pressure,
-                    "humidity": humidity,
-                    "weather_decs": weather_desc,
-                    "clouds": clouds,
-                    "wind_speed": wind_speed,
-                    "wind_deg": wind_deg,
-                    "rain": rain
-                }
+                weather_forecast.append([
+                    date_var,
+                    time_var,
+                    record["main"]["temp"],
+                    record["main"]["feels_like"],
+                    record["main"]["pressure"],
+                    record["main"]["humidity"],
+                    record["weather"][0]["description"],
+                    record["clouds"]["all"],
+                    record["wind"]["speed"],
+                    record["wind"]["deg"],
+                    rain,
+                    sunrise,
+                    sunset
+                ])
 
-            return weather_forecast, sunrise, sunset
+            return weather_forecast
         else:
             raise NotImplementedError
 
     def update():
+        """
+        Updates local weather database
+        """
+        connection = sqlite3.connect("Backend/Weather/WeatherData/data.db")
+        cursor = connection.cursor()
+
         cities = Data.weather.cities
         city_counter = 0
         for state in cities.keys():
             for city in cities[state]:
                 city_counter += 1
                 name = f"{city}, {state}"
+                table_name = name.replace(", ", "_").lower()
                 if state == "Česko":
-                    weather_forecast, sunrise, sunset = weather.forecast("cz", name)
+                    weather_forecast = weather.forecast("cz", name)
                 else:
                     raise NotImplementedError
                 
-                #Save
+                cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
+                connection.commit()
+
+                sql = f'''
+                CREATE TABLE IF NOT EXISTS {table_name} (
+                    date TEXT,
+                    time TEXT,
+                    temp INTEGER,
+                    feel_temp INTEGER,
+                    pressure INTEGER,
+                    humidity INTEGER,
+                    weather_desc TEXT,
+                    clouds INTEGER,
+                    wind_speed INTEGER,
+                    wind_deg INTEGER,
+                    rain INTEGER,
+                    sunrise TEXT,
+                    sunset TEXT
+                )
+                '''
+
+                cursor.execute(sql)
+                connection.commit()
+
+                for record in weather_forecast:
+                    sql = f'''
+                    INSERT INTO {table_name} 
+                    (
+                    date, time, temp, feel_temp, pressure, humidity, 
+                    weather_desc, clouds, wind_speed, wind_deg, rain, 
+                    sunrise, sunset
+                    )
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    '''
+
+                    cursor.execute(sql, record)
+                    connection.commit()
 
                 time.sleep(1)
 
                 max_updates = Data.weather.max_calls_per_minute*Data.weather.update_time_minutes
                 if city_counter >= max_updates - (max_updates/100):
                     raise NotImplementedError
+        connection.close()
+
+    def search(location:str):
+        """
+        Returns weather forecast from local database
+        """
+        location = location.replace(", ", "_").lower()
+        connection = sqlite3.connect("Backend/Weather/WeatherData/data.db")
+        cursor = connection.cursor()
+
+        cursor.execute(f"SELECT * FROM {location}")
+        rows = cursor.fetchall()
+        connection.close()
+
+        return rows

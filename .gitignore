@@ -5,6 +5,7 @@ cache/
 
 .vscode/
 Working/
+WeatherData/
 
 .env
 settings.json
