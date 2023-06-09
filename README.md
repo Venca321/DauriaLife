@@ -1,5 +1,33 @@
 # DauriaLife
 
+## Česky:
+
+### O projektu:
+
+Již brzy
+
+---
+
+### Jak spustit:
+
+Budete potřebovat nainstalovaný Docker \
+Postavte docker pomocí `docker build . -t dauria-life` \
+Spusťte docker pomocí `docker run dauria-life`
+
+---
+
+### Jak používat:
+
+Již brzy
+
+---
+
+### Kontaktujte mě:
+
+- 📧 **kontakt@vaclavparma.cz**
+- 🌐 [https://vaclavparma.cz](https://vaclavparma.cz)
+
+
 
 ## English:
 
@@ -13,7 +41,7 @@ Coming soon
 
 You will need Docker installed \
 Build docker using `docker build . -t dauria-life` \
-Run docker using `docker run dauria-life` \
+Run docker using `docker run dauria-life`
 
 ---
 
@@ -29,30 +57,3 @@ Coming soon
 - 🌐 [https://vaclavparma.cz](https://vaclavparma.cz)
 
 ---
-
-## Česky:
-
-### O projektu:
-
-Již brzy
-
----
-
-### Jak spustit:
-
-Budete potřebovat nainstalovaný Docker \
-Postavte docker pomocí `docker build . -t dauria-life` \
-Spusťte docker pomocí `docker run dauria-life` \
-
----
-
-### Jak používat:
-
-Již brzy
-
----
-
-### Kontaktujte mě:
-
-- 📧 **kontakt@vaclavparma.cz**
-- 🌐 [https://vaclavparma.cz](https://vaclavparma.cz)
