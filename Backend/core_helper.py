@@ -11,6 +11,13 @@ class Loaded_data():
     ENV_DATA = dotenv.dotenv_values(f"{os.getcwd()}/Data/Settings/.env")
     WEATHER_SETTINGS = json.load(open(f"{os.getcwd()}/Data/System/weather.json"))
 
+class colors():
+    BOLD = '\033[1m'
+    OK = f'{BOLD}\033[92m'
+    WARNING = f'{BOLD}\033[93m'
+    ERROR = f'{BOLD}\033[91m'
+    NORMAL = '\033[0m'
+
 class Data():
     """
     All data needed for system

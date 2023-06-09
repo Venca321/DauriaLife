@@ -7,14 +7,13 @@ import os, shutil
 
 #Setup
 os.system('pip install -r requirements.txt')
-#os.chdir("Frontend")
-#os.system("npm install")
-#os.chdir("../")
+os.chdir("Frontend")
+os.system("npm install")
+os.chdir("../")
 
 #Make folders
 LOCATION = os.getcwd()
-print(LOCATION)
-FOLDERS = ["Data/Settings"]
+FOLDERS = ["Data/Settings", "Backend/Weather/WeatherData"]
 for folder in FOLDERS:
     try: os.mkdir(f"{LOCATION}/{folder}")
     except: None
