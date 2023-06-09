@@ -10,7 +10,7 @@ if __name__ == "__main__":
     print("---------------------------------------------------------------------------------------\n")
 
     time.sleep(0.2)
-    #Startup test
+    if not Tests.run(True): exit()
     time.sleep(0.5)
 
     #multiprocessing
