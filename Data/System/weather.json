@@ -1,6 +1,6 @@
 {
     "max_calls_per_minute": 55,
-    "update_time_minutes": 120,
+    "update_time_minutes": 360,
     "cities": {
       "Česko": [
         "Praha",
