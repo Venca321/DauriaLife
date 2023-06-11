@@ -7,5 +7,5 @@ from Backend.core_helper import *
 
 from Tests.Tester.tester import Tests
 
-from Backend.Database.database import db
+from Backend.Database.database import db, db_setup
 from Backend.Weather.weather import weather

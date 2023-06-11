@@ -74,7 +74,7 @@ class Tests():
         """
         Run all tests
         """
-        DATABASE = False #if False test will be skipped
+        DATABASE = True #if False test will be skipped
         FLASK = False
         SVELTEKIT = False
         OVERALL = False

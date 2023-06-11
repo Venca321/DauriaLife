@@ -6,16 +6,17 @@
         "tables": [
             "system_info",
             "users",
+            "user_settings",
             "session_tokens",
             "user_roles",
-            "user_settings",
-            "messages",
-            "user_calendars",
-            "calendar",
-            "user_todos",
-            "todo",
+            "user_type",
+            "calendars",
+            "events",
+            "todo_lists",
+            "tasks",
             "notes",
-            "records"
+            "weather_recomendations",
+            "date_recomendations"
         ]
     }
 }
