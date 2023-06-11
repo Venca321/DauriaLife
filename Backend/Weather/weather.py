@@ -1,6 +1,6 @@
 
 from geopy.geocoders import Nominatim
-from Backend.core_helper import Data
+from Backend.core_helper import Data, report
 import requests, datetime, time, sqlite3, json
 
 API_KEY = Data.Settings.open_weather_api_key
@@ -14,6 +14,12 @@ def coords(pos:str):
     return location.latitude, location.longitude
 
 class weather():
+    def create_table_name(name:str):
+        """
+        Returns name, that is valid for database
+        """
+        return name.replace(", ", "_").replace(" ", "_").replace("-", "_").lower()
+
     def forecast(lang:str, location:str):
         """
         Function returning weather forecast
@@ -64,13 +70,25 @@ class weather():
         connection = sqlite3.connect("Backend/Weather/WeatherData/data.db")
         cursor = connection.cursor()
 
+        try:
+            with open("Backend/Weather/WeatherData/info.json", 'r') as openfile: json_object = json.load(openfile)
+            last_time = datetime.datetime.strptime(json_object["last_update"], "%H:%M:%S")
+            if last_time < datetime.datetime.now() + datetime.timedelta(minutes=int(Data.weather.update_time_minutes)-10): 
+                report(f"Weather data updated at {json_object['last_update']}, updated stopped.")
+                return False
+        except: None
+
+        time_now = datetime.datetime.now().strftime("%H:%M:%S")
+        json_object = json.dumps({"last_update": time_now}, indent=4)
+        with open("Backend/Weather/WeatherData/info.json", "w") as outfile: outfile.write(json_object)
+
         cities = Data.weather.cities
         city_counter = 0
         for state in cities.keys():
             for city in cities[state]:
                 city_counter += 1
                 name = f"{city}, {state}"
-                table_name = name.replace(", ", "_").lower()
+                table_name = weather.create_table_name(name)
                 if state == "Česko":
                     weather_forecast = weather.forecast("cz", name)
                 else:
@@ -114,18 +132,19 @@ class weather():
                     cursor.execute(sql, record)
                     connection.commit()
 
-                time.sleep(1)
+                time.sleep(0.1)
 
                 max_updates = Data.weather.max_calls_per_minute*Data.weather.update_time_minutes
                 if city_counter >= max_updates - (max_updates/100):
                     raise NotImplementedError
         connection.close()
+        return True
 
     def search(location:str):
         """
         Returns weather forecast from local database
         """
-        location = location.replace(", ", "_").lower()
+        location = weather.create_table_name(location)
         connection = sqlite3.connect("Backend/Weather/WeatherData/data.db")
         cursor = connection.cursor()
 

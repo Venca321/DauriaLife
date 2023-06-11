@@ -3,13 +3,18 @@
 All core function to avoid cross referencing
 """
 
-import json, dotenv, os
+import json, dotenv, os, datetime
 
-class Loaded_data():
-    SYSTEM_DATA = json.load(open(f"{os.getcwd()}/Data/System/system.json"))
-    SETTINGS_DATA = json.load(open(f"{os.getcwd()}/Data/Settings/settings.json"))
-    ENV_DATA = dotenv.dotenv_values(f"{os.getcwd()}/Data/Settings/.env")
-    WEATHER_SETTINGS = json.load(open(f"{os.getcwd()}/Data/System/weather.json"))
+def report(text:str):
+    """
+    Prints text with time info
+    """
+    time = datetime.datetime.now().strftime("%H:%M:%S")
+    if text.startswith("\n"):
+        text = text.replace("\n", "")
+        print(f"\n[{time}] {text}")
+    else:
+        print(f"[{time}] {text}")
 
 class colors():
     BOLD = '\033[1m'
@@ -17,6 +22,12 @@ class colors():
     WARNING = f'{BOLD}\033[93m'
     ERROR = f'{BOLD}\033[91m'
     NORMAL = '\033[0m'
+
+class Loaded_data():
+    SYSTEM_DATA = json.load(open(f"{os.getcwd()}/Data/System/system.json"))
+    SETTINGS_DATA = json.load(open(f"{os.getcwd()}/Data/Settings/settings.json"))
+    ENV_DATA = dotenv.dotenv_values(f"{os.getcwd()}/Data/Settings/.env")
+    WEATHER_SETTINGS = json.load(open(f"{os.getcwd()}/Data/System/weather.json"))
 
 class Data():
     """
