@@ -26,8 +26,8 @@ class colors():
 class Loaded_data():
     SYSTEM_DATA = json.load(open(f"{os.getcwd()}/Data/System/system.json"))
     SETTINGS_DATA = json.load(open(f"{os.getcwd()}/Data/Settings/settings.json"))
-    ENV_DATA = dotenv.dotenv_values(f"{os.getcwd()}/Data/Settings/.env")
     WEATHER_SETTINGS = json.load(open(f"{os.getcwd()}/Data/System/weather.json"))
+    ENV_DATA = dotenv.dotenv_values(f"{os.getcwd()}/Data/Settings/.env")
 
 class Data():
     """
@@ -44,7 +44,8 @@ class Data():
         """
         System settings
         """
-        open_weather_api_key:str = Loaded_data.ENV_DATA["open_weather_api_key"]
+        try: open_weather_api_key:str = os.environ["open_weather_api_key"]
+        except: open_weather_api_key:str = Loaded_data.ENV_DATA["open_weather_api_key"]
 
     class Database():
         """
@@ -53,10 +54,15 @@ class Data():
         version:str = Loaded_data.SYSTEM_DATA["database"]["version"]
         name:str = Loaded_data.SYSTEM_DATA["database"]["name"]
         tables:list = Loaded_data.SYSTEM_DATA["database"]["tables"]
-        host:str = Loaded_data.ENV_DATA["database_host"]
-        user:str = Loaded_data.ENV_DATA["database_user"]
-        password:str = Loaded_data.ENV_DATA["database_password"]
         errors:dict = {"cz": json.load(open(f"{os.getcwd()}/Data/Language/cz/database.json"))}
+        try:
+            host:str = os.environ["database_host"]
+            user:str = os.environ["database_user"]
+            password:str = os.environ["database_password"]
+        except:
+            host:str = Loaded_data.ENV_DATA["database_host"]
+            user:str = Loaded_data.ENV_DATA["database_user"]
+            password:str = Loaded_data.ENV_DATA["database_password"]
 
     class weather():
         """
