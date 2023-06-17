@@ -159,6 +159,6 @@ class weather():
 
     def decode_weather_id(lang:str, id:int):
         if lang == "cz":
-            lang_file = json.load(open("Data/Language/Czech/weather.json"))
+            lang_file = json.load(open("Data/Language/cz/weather.json"))
 
         return lang_file[str(id)]

@@ -1,6 +1,9 @@
 
 """
 Dauria life database connector
+
+response will be:
+<code>, <data?>
 """
 
 from Backend.core_helper import *
@@ -32,6 +35,9 @@ class Connection():
 
 class db_setup():
     def remove_db(sure:bool=False):
+        """
+        Remove all database
+        """
         if sure:
             try:
                 mydb = mysql.connector.connect(
@@ -44,6 +50,7 @@ class db_setup():
                 mycursor.execute(f"DROP DATABASE {DATABASE}")
                 mydb.close()
             except: None
+        return 200
 
     def create_db():
         """
@@ -59,14 +66,18 @@ class db_setup():
         mycursor.execute(f"CREATE DATABASE {DATABASE}")
         mycursor.execute("SET GLOBAL time_zone = 'Europe/Prague';")
         mydb.close()
+        return 200
 
     def list_tables():
+        """
+        List all tables in database
+        """
         cursor, connection = Connection.connect()
         cursor.execute("SHOW TABLES")
         tables = cursor.fetchall()
         connection.close()
 
-        return tables
+        return 200, tables
 
     def create_tables():
         """
@@ -255,6 +266,7 @@ class db_setup():
         )
 
         connection.close()
+        return 200
 
 class db():
     class System_info():
@@ -273,7 +285,7 @@ class db():
             )
             data = cursor.fetchall()
             connection.close()
-            return data
+            return 200, data
 
         def edit(new_version:str):
             """
@@ -295,14 +307,15 @@ class db():
 
             connection.commit()
             connection.close()
-            return True
+            return 200
 
     class User():
         """
         Manage all user related
         """
-        def __init__(self, id:str, name:str, username:str, email:str, password:str, updated_at, created_at):
+        def __init__(self, lang:str, id:str, name:str, username:str, email:str, password:str, updated_at, created_at):
             #Variables
+            self.lang = lang
             self.id = id
             self.name = name
             self.username = username
@@ -320,12 +333,23 @@ class db():
             self.note = self.Note(self)
             self.type = self.Type(self)
 
-        def create(name:str, username:str, email:str, password:str):
+        def create(lang:str, name:str, username:str, email:str, password:str):
             """
             Create new user
             """
+            cursor, connection = Connection.connect()
 
-            #Validate data
+            #Validate email
+            cursor.execute("SELECT * FROM users WHERE email = %s", (email, ))
+            results = cursor.fetchall()
+            if results:
+                return 400, Data.Database.errors[lang]["1"]
+
+            #Validate username
+            cursor.execute("SELECT * FROM users WHERE username = %s", (username, ))
+            results = cursor.fetchall()
+            if results:
+                return 400, Data.Database.errors[lang]["2"]
 
             now = datetime.datetime.now().timestamp()
             #Create user
@@ -334,9 +358,9 @@ class db():
             
             #Setup everything
 
-            return db.User(id, name, username, email, password, now, now)
+            return 200, db.User(lang, id, name, username, email, password, now, now)
 
-        def login(session_token:str):
+        def login(lang:str, session_token:str):
             """
             Login user using session_token
             """
@@ -352,9 +376,9 @@ class db():
             updated_at = ""
             created_at = ""
 
-            return db.User(id, name, username, email, password, updated_at, created_at)
+            return 200, db.User(lang, id, name, username, email, password, updated_at, created_at)
         
-        def sign_in(username_or_email:str, password:str):
+        def sign_in(lang:str, username_or_email:str, password:str):
             """
             Login user - add session token
             """
@@ -371,7 +395,7 @@ class db():
 
             #Create session_token
 
-            return db.User(id, name, username, email, password, updated_at, created_at)
+            return 200, db.User(lang, id, name, username, email, password, updated_at, created_at)
 
         def edit(self, name:str=None, username:str=None, email:str=None, password:str=None):
             """
@@ -385,16 +409,14 @@ class db():
 
             now = datetime.datetime.now().timestamp()
             #Edit user
-            id = ""
-            created_at = ""
 
-            return db.User(id, name, username, email, password, now, created_at)
+            return 200, db.User(self.lang, self.id, name, username, email, password, now, self.created_at)
 
         def remove(self):
             """
             Remove user
             """
-            pass
+            raise NotImplementedError
 
         class Session_token():
             """
@@ -407,13 +429,13 @@ class db():
                 """
                 Add session token
                 """
-                pass
+                raise NotImplementedError
 
             def remove(self, session_token):
                 """
                 Remove session token
                 """
-                pass
+                raise NotImplementedError
 
         class Roles():
             """
@@ -426,25 +448,25 @@ class db():
                 """
                 Get user roles
                 """
-                pass
+                raise NotImplementedError
 
             def edit(self):
                 """
                 Edit user roles
                 """
-                pass
+                raise NotImplementedError
 
             def setup(user_id:str):
                 """
                 Setup user roles for new user
                 """
-                pass
+                raise NotImplementedError
 
             def remove(self):
                 """
                 Remove on user removal
                 """
-                pass
+                raise NotImplementedError
 
         class Settings():
             """
@@ -457,25 +479,25 @@ class db():
                 """
                 Get user settings
                 """
-                pass
+                raise NotImplementedError
 
             def edit(self):
                 """
                 Edit user settings
                 """
-                pass
+                raise NotImplementedError
 
             def setup(user_id:str):
                 """
                 Setup setting for new user
                 """
-                pass
+                raise NotImplementedError
 
             def remove(self):
                 """
                 Remove on user removal
                 """
-                pass
+                raise NotImplementedError
 
         class Calendar():
             """
@@ -489,19 +511,19 @@ class db():
                 """
                 Get calendar
                 """
-                pass
+                raise NotImplementedError
 
             def edit(self):
                 """
                 Edit calendar
                 """
-                pass
+                raise NotImplementedError
 
             def remove(self):
                 """
                 Remove calendar
                 """
-                pass
+                raise NotImplementedError
 
             class Event():
                 """
@@ -514,19 +536,19 @@ class db():
                     """
                     Get event
                     """
-                    pass
+                    raise NotImplementedError
 
                 def edit(self):
                     """
                     Edit event
                     """
-                    pass
+                    raise NotImplementedError
 
                 def remove(self):
                     """
                     Remove event
                     """
-                    pass
+                    raise NotImplementedError
 
         class Todo_list():
             """
@@ -539,19 +561,19 @@ class db():
                 """
                 Get todo list
                 """
-                pass
+                raise NotImplementedError
 
             def edit(self):
                 """
                 Edit todo list
                 """
-                pass
+                raise NotImplementedError
 
             def remove(self):
                 """
                 Remove todo list
                 """
-                pass
+                raise NotImplementedError
 
             class Task():
                 """
@@ -564,19 +586,19 @@ class db():
                     """
                     Get task
                     """
-                    pass
+                    raise NotImplementedError
 
                 def edit(self):
                     """
                     Edit task
                     """
-                    pass
+                    raise NotImplementedError
 
                 def remove(self):
                     """
                     Remove task
                     """
-                    pass
+                    raise NotImplementedError
 
         class Note():
             """
@@ -589,19 +611,19 @@ class db():
                 """
                 Get note
                 """
-                pass
+                raise NotImplementedError
 
             def edit(self):
                 """
                 Edit note
                 """
-                pass
+                raise NotImplementedError
 
             def remove(self):
                 """
                 Remove note
                 """
-                pass
+                raise NotImplementedError
 
         class Type():
             """
@@ -614,25 +636,25 @@ class db():
                 """
                 Get user type
                 """
-                pass
+                raise NotImplementedError
 
             def edit(self):
                 """
                 Edit user type
                 """
-                pass
+                raise NotImplementedError
 
             def setup(user_id:str):
                 """
                 Setup for new user
                 """
-                pass
+                raise NotImplementedError
 
             def remove(self):
                 """
                 Remove 
                 """
-                pass
+                raise NotImplementedError
 
     class Recomendations():
         """

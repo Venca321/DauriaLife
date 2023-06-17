@@ -51,6 +51,9 @@ class Test_database_data():
     def test_password(self):
         assert isinstance(Data.Database.password, str)
 
+    def test_errors(self):
+        assert isinstance(Data.Database.errors, dict)
+
 class Test_weather_settings():
     def test_max_calls_per_minute(self):
         assert isinstance(Data.weather.max_calls_per_minute, int)

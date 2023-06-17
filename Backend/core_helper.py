@@ -56,6 +56,7 @@ class Data():
         host:str = Loaded_data.ENV_DATA["database_host"]
         user:str = Loaded_data.ENV_DATA["database_user"]
         password:str = Loaded_data.ENV_DATA["database_password"]
+        errors:dict = {"cz": json.load(open(f"{os.getcwd()}/Data/Language/cz/database.json"))}
 
     class weather():
         """
