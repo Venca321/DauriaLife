@@ -1,6 +1,6 @@
 
 """
-Pytest for /Backend/core.py
+Pytest for Backend/core.py
 """
 
 import sys, os

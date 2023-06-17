@@ -13,6 +13,9 @@ def coords(pos:str):
     location = geolocator.geocode(pos)
     return location.latitude, location.longitude
 
+class weather_db():
+    pass
+
 class weather():
     def create_table_name(name:str):
         """

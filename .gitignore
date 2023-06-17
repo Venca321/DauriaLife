@@ -7,5 +7,7 @@ cache/
 Working/
 WeatherData/
 
+temp-*
+
 .env
 settings.json
