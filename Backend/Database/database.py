@@ -57,6 +57,7 @@ class db_setup():
 
         mycursor = mydb.cursor()
         mycursor.execute(f"CREATE DATABASE {DATABASE}")
+        mycursor.execute("SET GLOBAL time_zone = 'Europe/Prague';")
         mydb.close()
 
     def list_tables():
@@ -82,6 +83,7 @@ class db_setup():
         )
         """
         )
+        db.System_info.edit(Data.Database.version)
 
         #users
         cursor.execute(
@@ -263,13 +265,37 @@ class db():
             """
             Get system info
             """
-            pass
+            cursor, connection = Connection.connect()
+            cursor.execute(
+            """
+            SELECT * FROM system_info
+            """
+            )
+            data = cursor.fetchall()
+            connection.close()
+            return data
 
-        def edit():
+        def edit(new_version:str):
             """
             Edit system info
             """
-            pass
+            cursor, connection = Connection.connect()
+
+            cursor.execute(
+            """
+            DELETE FROM system_info
+            """
+            )
+
+            cursor.execute(
+            f"""
+            INSERT INTO system_info (version) VALUES (%s);
+            """, (new_version, )
+            )
+
+            connection.commit()
+            connection.close()
+            return True
 
     class User():
         """
