@@ -54,7 +54,6 @@ class Data():
         version:str = Loaded_data.SYSTEM_DATA["database"]["version"]
         name:str = Loaded_data.SYSTEM_DATA["database"]["name"]
         tables:list = Loaded_data.SYSTEM_DATA["database"]["tables"]
-        errors:dict = {"cz": json.load(open(f"{os.getcwd()}/Data/Language/cz/database.json"))}
         try:
             host:str = os.environ["database_host"]
             user:str = os.environ["database_user"]
@@ -64,10 +63,14 @@ class Data():
             user:str = Loaded_data.ENV_DATA["database_user"]
             password:str = Loaded_data.ENV_DATA["database_password"]
 
-    class weather():
+    class Weather():
         """
         Weather settings
         """
         max_calls_per_minute:int = Loaded_data.WEATHER_SETTINGS["max_calls_per_minute"]
         update_time_minutes:int = Loaded_data.WEATHER_SETTINGS["update_time_minutes"]
         cities:dict = Loaded_data.WEATHER_SETTINGS["cities"]
+
+    class Lang():
+        database:dict = {"cz": json.load(open(f"{os.getcwd()}/Data/Language/cz/database.json"))}
+        weather:dict = {"cz": json.load(open(f"{os.getcwd()}/Data/Language/cz/weather.json"))}

@@ -343,13 +343,13 @@ class db():
             cursor.execute("SELECT * FROM users WHERE email = %s", (email, ))
             results = cursor.fetchall()
             if results:
-                return 400, Data.Database.errors[lang]["1"]
+                return 400, Data.Lang.database[lang]["1"]
 
             #Validate username
             cursor.execute("SELECT * FROM users WHERE username = %s", (username, ))
             results = cursor.fetchall()
             if results:
-                return 400, Data.Database.errors[lang]["2"]
+                return 400, Data.Lang.database[lang]["2"]
 
             now = datetime.datetime.now().timestamp()
             #Create user

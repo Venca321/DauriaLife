@@ -51,15 +51,19 @@ class Test_database_data():
     def test_password(self):
         assert isinstance(Data.Database.password, str)
 
-    def test_errors(self):
-        assert isinstance(Data.Database.errors, dict)
-
 class Test_weather_settings():
     def test_max_calls_per_minute(self):
-        assert isinstance(Data.weather.max_calls_per_minute, int)
+        assert isinstance(Data.Weather.max_calls_per_minute, int)
 
     def test_update_time_minutes(self):
-        assert isinstance(Data.weather.update_time_minutes, int)
+        assert isinstance(Data.Weather.update_time_minutes, int)
 
     def test_cities(self):
-        assert isinstance(Data.weather.cities, dict)
+        assert isinstance(Data.Weather.cities, dict)
+
+class Test_Lang_data():
+    def test_database(self):
+        assert isinstance(Data.Lang.database, dict)
+
+    def test_weather(self):
+        assert isinstance(Data.Lang.weather, dict)

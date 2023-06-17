@@ -76,7 +76,7 @@ class weather():
         try:
             with open("Backend/Weather/WeatherData/info.json", 'r') as openfile: json_object = json.load(openfile)
             last_time = datetime.datetime.strptime(json_object["last_update"], "%H:%M:%S")
-            if last_time < datetime.datetime.now() + datetime.timedelta(minutes=int(Data.weather.update_time_minutes)-10): 
+            if last_time < datetime.datetime.now() + datetime.timedelta(minutes=int(Data.Weather.update_time_minutes)-10): 
                 report(f"Weather data updated at {json_object['last_update']}, updated stopped.")
                 return False
         except: None
@@ -85,7 +85,7 @@ class weather():
         json_object = json.dumps({"last_update": time_now}, indent=4)
         with open("Backend/Weather/WeatherData/info.json", "w") as outfile: outfile.write(json_object)
 
-        cities = Data.weather.cities
+        cities = Data.Weather.cities
         city_counter = 0
         for state in cities.keys():
             for city in cities[state]:
@@ -137,7 +137,7 @@ class weather():
 
                 time.sleep(0.1)
 
-                max_updates = Data.weather.max_calls_per_minute*Data.weather.update_time_minutes
+                max_updates = Data.Weather.max_calls_per_minute*Data.Weather.update_time_minutes
                 if city_counter >= max_updates - (max_updates/100):
                     raise NotImplementedError
         connection.close()
@@ -158,7 +158,4 @@ class weather():
         return rows
 
     def decode_weather_id(lang:str, id:int):
-        if lang == "cz":
-            lang_file = json.load(open("Data/Language/cz/weather.json"))
-
-        return lang_file[str(id)]
+        return Data.Lang.weather[lang][str(id)]
