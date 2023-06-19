@@ -56,10 +56,12 @@ class Data():
         tables:list = Loaded_data.SYSTEM_DATA["database"]["tables"]
         try:
             host:str = os.environ["database_host"]
+            port:int = int(os.environ["database_port"])
             user:str = os.environ["database_user"]
             password:str = os.environ["database_password"]
         except:
             host:str = Loaded_data.ENV_DATA["database_host"]
+            port:int = int(Loaded_data.ENV_DATA["database_port"])
             user:str = Loaded_data.ENV_DATA["database_user"]
             password:str = Loaded_data.ENV_DATA["database_password"]
 

@@ -10,6 +10,7 @@ from Backend.core_helper import *
 import mysql.connector, datetime
 
 HOST = Data.Database.host
+PORT = Data.Database.port
 USER = Data.Database.user
 PASSWORD = Data.Database.password
 DATABASE = Data.Database.name
@@ -24,6 +25,7 @@ class Connection():
         """
         mydb = mysql.connector.connect(
             host=HOST,
+            port=PORT,
             user=USER,
             password=PASSWORD,
             database=DATABASE
@@ -42,6 +44,7 @@ class db_setup():
             try:
                 mydb = mysql.connector.connect(
                     host=HOST,
+                    port=PORT,
                     user=USER,
                     password=PASSWORD
                 )
@@ -58,13 +61,14 @@ class db_setup():
         """
         mydb = mysql.connector.connect(
         host=HOST,
+        port=PORT,
         user=USER,
         password=PASSWORD
         )
 
         mycursor = mydb.cursor()
         mycursor.execute(f"CREATE DATABASE {DATABASE}")
-        mycursor.execute("SET GLOBAL time_zone = 'Europe/Prague';")
+        #mycursor.execute("SET GLOBAL time_zone = %s;", ("Europe/Prague",))
         mydb.close()
         return 200
 
