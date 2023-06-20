@@ -11,9 +11,16 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.11
+        env:
+          open_weather_api_key: ${{ secrets.OPEN_WEATHER_API_KEY }}
+          database_host: ${{ secrets.DATABASE_HOST }}
+          database_port: ${{ secrets.DATABASE_PORT }}
+          database_user: ${{ secrets.DATABASE_USER }}
+          database_password: ${{ secrets.DATABASE_PASSWORD }}
       - name: Upgrade pip
         run: pip install --upgrade pip
       - name: Run custom installer
         run: python3 installer.py
       - name: Run pytest
         run: pytest
+      
