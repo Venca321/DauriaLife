@@ -4,7 +4,7 @@
 
 ### O projektu:
 
-Již brzy
+Cílem tohoto projektu je vytvořit chytrý kalendář, který bude doporučovat časové plánování na základě strojového učení.
 
 ---
 
@@ -47,13 +47,13 @@ Run docker using `docker run dauria-life`
 
 ### How to use:
 
-Coming soon
+The goal of this project is to create a smart calendar that will recommend time planning based on machine learning.
 
 ---
 
 ### Contact me:
 
 - 📧 **contact@vaclavparma.cz**
-- 🌐 [https://vaclavparma.cz](https://vaclavparma.cz)
+- 🌐 [https://vaclavparma.cz/EN](https://vaclavparma.cz/EN)
 
 ---
