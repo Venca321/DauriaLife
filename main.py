@@ -8,7 +8,7 @@ def tester_task():
         if not Tests.run(): raise NotImplementedError
 
 def weather_updater_task():
-    WEATHER_DELAY = Data.weather.update_time_minutes*60
+    WEATHER_DELAY = Data.Weather.update_time_minutes*60
     time.sleep(10)
     while True:
         report("Updating weather data...")

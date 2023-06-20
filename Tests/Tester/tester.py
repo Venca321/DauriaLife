@@ -27,6 +27,7 @@ class Tests():
         """
         mydb = mysql.connector.connect(
             host = Data.Database.host,
+            port = Data.Database.port,
             user = Data.Database.user,
             password = Data.Database.password,
             database = Data.Database.name

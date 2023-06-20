@@ -14,7 +14,43 @@ def coords(pos:str):
     return location.latitude, location.longitude
 
 class weather_db():
-    pass
+    def create_table(cursor, connection, table_name: str) -> None:
+        """Creates table in database."""
+        sql = f'''
+        CREATE TABLE IF NOT EXISTS {table_name} (
+            date TEXT,
+            time TEXT,
+            temp INTEGER,
+            feel_temp INTEGER,
+            pressure INTEGER,
+            humidity INTEGER,
+            weather_id INTEGER,
+            clouds INTEGER,
+            wind_speed INTEGER,
+            wind_deg INTEGER,
+            rain INTEGER,
+            sunrise TEXT,
+            sunset TEXT
+        )
+        '''
+
+        cursor.execute(sql)
+        connection.commit()
+
+    def insert_data(cursor, connection, table_name: str, record: list) -> None:
+        """Inserts data into database."""
+        sql = f'''
+        INSERT INTO {table_name} 
+        (
+        date, time, temp, feel_temp, pressure, humidity, 
+        weather_id, clouds, wind_speed, wind_deg, rain, 
+        sunrise, sunset
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        '''
+
+        cursor.execute(sql, record)
+        connection.commit()
 
 class weather():
     def create_table_name(name:str):
@@ -36,10 +72,9 @@ class weather():
         if data["cod"] == "200":
             sunrise = datetime.datetime.fromtimestamp(data["city"]["sunrise"]).strftime("%H:%M:%S")
             sunset = datetime.datetime.fromtimestamp(data["city"]["sunset"]).strftime("%H:%M:%S")
-            raw_weather = data["list"]
 
             weather_forecast = []
-            for record in raw_weather:
+            for record in data["list"]:
                 date_time = datetime.datetime.fromtimestamp(record["dt"]) #Datetime
                 date_var = date_time.strftime("%d-%m-%Y") #21-4-2023
                 time_var = date_time.strftime("%H:%M:%S") #16:24:00
@@ -47,19 +82,11 @@ class weather():
                 except: rain = 0
 
                 weather_forecast.append([
-                    date_var,
-                    time_var,
-                    int(record["main"]["temp"]),
-                    int(record["main"]["feels_like"]),
-                    int(record["main"]["pressure"]),
-                    int(record["main"]["humidity"]),
-                    int(record["weather"][0]["id"]),
-                    int(record["clouds"]["all"]),
-                    int(record["wind"]["speed"]),
-                    int(record["wind"]["deg"]),
-                    int(rain),
-                    sunrise,
-                    sunset
+                    date_var, time_var, int(record["main"]["temp"]),
+                    int(record["main"]["feels_like"]), int(record["main"]["pressure"]),
+                    int(record["main"]["humidity"]), int(record["weather"][0]["id"]),
+                    int(record["clouds"]["all"]), int(record["wind"]["speed"]),
+                    int(record["wind"]["deg"]), int(rain), sunrise, sunset
                 ])
 
             return weather_forecast
@@ -100,47 +127,16 @@ class weather():
                 cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
                 connection.commit()
 
-                sql = f'''
-                CREATE TABLE IF NOT EXISTS {table_name} (
-                    date TEXT,
-                    time TEXT,
-                    temp INTEGER,
-                    feel_temp INTEGER,
-                    pressure INTEGER,
-                    humidity INTEGER,
-                    weather_id INTEGER,
-                    clouds INTEGER,
-                    wind_speed INTEGER,
-                    wind_deg INTEGER,
-                    rain INTEGER,
-                    sunrise TEXT,
-                    sunset TEXT
-                )
-                '''
-
-                cursor.execute(sql)
-                connection.commit()
+                weather_db.create_table(cursor, connection, table_name)
 
                 for record in weather_forecast:
-                    sql = f'''
-                    INSERT INTO {table_name} 
-                    (
-                    date, time, temp, feel_temp, pressure, humidity, 
-                    weather_id, clouds, wind_speed, wind_deg, rain, 
-                    sunrise, sunset
-                    )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    '''
+                    weather_db.insert_data(cursor, connection, table_name, record)
 
-                    cursor.execute(sql, record)
-                    connection.commit()
+                    time.sleep(0.1)
 
-                time.sleep(0.1)
-
-                max_updates = Data.Weather.max_calls_per_minute*Data.Weather.update_time_minutes
-                if city_counter >= max_updates - (max_updates/100):
-                    raise NotImplementedError
-        connection.close()
+                    max_updates = Data.Weather.max_calls_per_minute*Data.Weather.update_time_minutes
+                    if city_counter >= max_updates - (max_updates/100):
+                        raise NotImplementedError
         return True
 
     def search(location:str):
