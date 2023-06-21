@@ -44,7 +44,7 @@ class Data():
         """
         System settings
         """
-        try: open_weather_api_key:str = os.environ["open_weather_api_key"]
+        try: open_weather_api_key:str = os.environ["OPEN_WEATHER_API_KEY"]
         except: open_weather_api_key:str = Loaded_data.ENV_DATA["open_weather_api_key"]
 
     class Database():
@@ -55,10 +55,10 @@ class Data():
         name:str = Loaded_data.SYSTEM_DATA["database"]["name"]
         tables:list = Loaded_data.SYSTEM_DATA["database"]["tables"]
         try:
-            host:str = os.environ["database_host"]
-            port:int = int(os.environ["database_port"])
-            user:str = os.environ["database_user"]
-            password:str = os.environ["database_password"]
+            host:str = os.environ["DATABASE_HOST"]
+            port:int = int(os.environ["DATABASE_PORT"])
+            user:str = os.environ["DATABASE_USER"]
+            password:str = os.environ["DATABASE_PASSWORD"]
         except:
             host:str = Loaded_data.ENV_DATA["database_host"]
             port:int = int(Loaded_data.ENV_DATA["database_port"])
