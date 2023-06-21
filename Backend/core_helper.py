@@ -45,7 +45,7 @@ class Data():
         System settings
         """
         try: open_weather_api_key:str = os.environ["OPEN_WEATHER_API_KEY"]
-        except: open_weather_api_key:str = Loaded_data.ENV_DATA["open_weather_api_key"]
+        except: open_weather_api_key:str = Loaded_data.ENV_DATA["OPEN_WEATHER_API_KEY"]
 
     class Database():
         """
@@ -60,10 +60,10 @@ class Data():
             user:str = os.environ["DATABASE_USER"]
             password:str = os.environ["DATABASE_PASSWORD"]
         except:
-            host:str = Loaded_data.ENV_DATA["database_host"]
-            port:int = int(Loaded_data.ENV_DATA["database_port"])
-            user:str = Loaded_data.ENV_DATA["database_user"]
-            password:str = Loaded_data.ENV_DATA["database_password"]
+            host:str = Loaded_data.ENV_DATA["DATABASE_HOST"]
+            port:int = int(Loaded_data.ENV_DATA["DATABASE_PORT"])
+            user:str = Loaded_data.ENV_DATA["DATABASE_USER"]
+            password:str = Loaded_data.ENV_DATA["DATABASE_PASSWORD"]
 
     class Weather():
         """
