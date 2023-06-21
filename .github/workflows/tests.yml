@@ -11,12 +11,13 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.11
-        env:
-          OPEN_WEATHER_API_KEY: ${{ secrets.OPEN_WEATHER_API_KEY }}
-          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-          DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
-          DATABASE_USER: ${{ secrets.DATABASE_USER }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      - name: Set secrets
+        run: |
+          OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }}
+          DATABASE_HOST=${{ secrets.DATABASE_HOST }}
+          DATABASE_PORT=${{ secrets.DATABASE_PORT }}
+          DATABASE_USER=${{ secrets.DATABASE_USER }}
+          DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
       - name: Upgrade pip
         run: pip install --upgrade pip
       - name: Run custom installer
