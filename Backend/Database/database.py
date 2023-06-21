@@ -14,6 +14,7 @@ PORT = Data.Database.port
 USER = Data.Database.user
 PASSWORD = Data.Database.password
 DATABASE = Data.Database.name
+DEBUG_MODE = Data.Settings.debug_mode
 
 class Connection():
     """
@@ -23,6 +24,7 @@ class Connection():
         """
         Connect to database
         """
+        if DEBUG_MODE: print("Connecting to database...")
         mydb = mysql.connector.connect(
             host=HOST,
             port=PORT,
@@ -31,6 +33,7 @@ class Connection():
             database=DATABASE
         )
 
+        if DEBUG_MODE: print("Connected to database")
         mycursor = mydb.cursor()
 
         return mycursor, mydb
@@ -41,6 +44,7 @@ class db_setup():
         Remove all database
         """
         if sure:
+            if DEBUG_MODE: print("Removing database...")
             try:
                 mydb = mysql.connector.connect(
                     host=HOST,
@@ -52,6 +56,7 @@ class db_setup():
                 mycursor = mydb.cursor()
                 mycursor.execute(f"DROP DATABASE {DATABASE}")
                 mydb.close()
+                if DEBUG_MODE: print("Database removed")
             except: None
         return 200
 
@@ -59,6 +64,7 @@ class db_setup():
         """
         Connect to MySQL and create database
         """
+        if DEBUG_MODE: print("Connecting to database...")
         mydb = mysql.connector.connect(
         host=HOST,
         port=PORT,
@@ -66,10 +72,13 @@ class db_setup():
         password=PASSWORD
         )
 
+        if DEBUG_MODE: print("Connected to database\nCreating database...")
+
         mycursor = mydb.cursor()
         mycursor.execute(f"CREATE DATABASE {DATABASE}")
         #mycursor.execute("SET GLOBAL time_zone = %s;", ("Europe/Prague",))
         mydb.close()
+        if DEBUG_MODE: print("Database created")
         return 200
 
     def list_tables():
@@ -90,6 +99,7 @@ class db_setup():
         cursor, connection = Connection.connect()
 
         #system_info
+        if DEBUG_MODE: print("Creating system_info table...")
         cursor.execute(
         """
         CREATE TABLE system_info ( 
@@ -101,6 +111,7 @@ class db_setup():
         db.System_info.edit(Data.Database.version)
 
         #users
+        if DEBUG_MODE: print("Creating users table...")
         cursor.execute(
         """
         CREATE TABLE users (
@@ -116,6 +127,7 @@ class db_setup():
         )
 
         #user_settings
+        if DEBUG_MODE: print("Creating user_settings table...")
         cursor.execute(
         """
         CREATE TABLE user_settings (
@@ -128,6 +140,7 @@ class db_setup():
         )
 
         #session_tokens
+        if DEBUG_MODE: print("Creating session_tokens table...")
         cursor.execute(
         """
         CREATE TABLE session_tokens (
@@ -142,6 +155,7 @@ class db_setup():
         )
 
         #user_roles
+        if DEBUG_MODE: print("Creating user_roles table...")
         cursor.execute(
         """
         CREATE TABLE user_roles (
@@ -156,6 +170,7 @@ class db_setup():
         )
 
         #user_type
+        if DEBUG_MODE: print("Creating user_type table...")
         cursor.execute(
         """
         CREATE TABLE user_type (
@@ -168,6 +183,7 @@ class db_setup():
         )
 
         #calendars
+        if DEBUG_MODE: print("Creating calendars table...")
         cursor.execute(
         """
         CREATE TABLE calendars (
@@ -182,6 +198,7 @@ class db_setup():
         )
 
         #events
+        if DEBUG_MODE: print("Creating events table...")
         cursor.execute(
         """
         CREATE TABLE events (
@@ -198,6 +215,7 @@ class db_setup():
         )
 
         #todo_lists
+        if DEBUG_MODE: print("Creating todo_lists table...")
         cursor.execute(
         """
         CREATE TABLE todo_lists (
@@ -212,6 +230,7 @@ class db_setup():
         )
 
         #tasks
+        if DEBUG_MODE: print("Creating tasks table...")
         cursor.execute(
         """
         CREATE TABLE tasks (
@@ -227,6 +246,7 @@ class db_setup():
         )
 
         #notes
+        if DEBUG_MODE: print("Creating notes table...")
         cursor.execute(
         """
         CREATE TABLE notes (
@@ -242,6 +262,7 @@ class db_setup():
         )
 
         #weather_recomendations
+        if DEBUG_MODE: print("Creating weather_recomendations table...")
         cursor.execute(
         """
         CREATE TABLE weather_recomendations (
@@ -255,6 +276,7 @@ class db_setup():
         )
 
         #date_recomendations
+        if DEBUG_MODE: print("Creating date_recomendations table...")
         cursor.execute(
         """
         CREATE TABLE date_recomendations (
@@ -270,6 +292,7 @@ class db_setup():
         )
 
         connection.close()
+        if DEBUG_MODE: print("All tables successfully created!")
         return 200
 
 class db():
@@ -282,13 +305,11 @@ class db():
             Get system info
             """
             cursor, connection = Connection.connect()
-            cursor.execute(
-            """
-            SELECT * FROM system_info
-            """
-            )
+            if DEBUG_MODE: print("Getting system info...")
+            cursor.execute("SELECT * FROM system_info")
             data = cursor.fetchall()
             connection.close()
+            if DEBUG_MODE: print("System info successfully getted!")
             return 200, data
 
         def edit(new_version:str):
@@ -297,20 +318,13 @@ class db():
             """
             cursor, connection = Connection.connect()
 
-            cursor.execute(
-            """
-            DELETE FROM system_info
-            """
-            )
-
-            cursor.execute(
-            f"""
-            INSERT INTO system_info (version) VALUES (%s);
-            """, (new_version, )
-            )
-
+            if DEBUG_MODE: print("Editing system info...")
+            cursor.execute("DELETE FROM system_info;")
+            cursor.execute(f"INSERT INTO system_info (version) VALUES (%s);", (new_version, ))
             connection.commit()
             connection.close()
+            if DEBUG_MODE: print("System info successfully edited!")
+
             return 200
 
     class User():
@@ -318,6 +332,7 @@ class db():
         Manage all user related
         """
         def __init__(self, lang:str, id:str, name:str, username:str, email:str, password:str, updated_at, created_at):
+            if DEBUG_MODE: print("Creating user object...")
             #Variables
             self.lang = lang
             self.id = id
@@ -336,6 +351,7 @@ class db():
             self.todo_list = self.Todo_list(self)
             self.note = self.Note(self)
             self.type = self.Type(self)
+            if DEBUG_MODE: print("User object successfully created!")
 
         def create(lang:str, name:str, username:str, email:str, password:str):
             """
@@ -344,39 +360,43 @@ class db():
             cursor, connection = Connection.connect()
 
             #Validate email
+            if DEBUG_MODE: print("Validating email...")
             cursor.execute("SELECT * FROM users WHERE email = %s", (email, ))
             results = cursor.fetchall()
             if results:
                 return 400, Data.Lang.database[lang]["1"]
 
             #Validate username
+            if DEBUG_MODE: print("Validating username...")
             cursor.execute("SELECT * FROM users WHERE username = %s", (username, ))
             results = cursor.fetchall()
             if results:
                 return 400, Data.Lang.database[lang]["2"]
 
             #Create user
-            cursor.execute(
-            f"""
-            INSERT INTO users (name, username, email, password) VALUES (%s, %s, %s, %s);
-            """, (name, username, email, password,)
-            )
+            if DEBUG_MODE: print("Creating user...")
+            cursor.execute(f"INSERT INTO users (name, username, email, password) VALUES (%s, %s, %s, %s);", 
+                           (name, username, email, password,))
             connection.commit()
 
             #Check
-            cursor.execute("SELECT * FROM users WHERE username = %s AND email = %s AND password = %s", (username, email, password, ))
+            if DEBUG_MODE: print("Checking user...")
+            cursor.execute("SELECT * FROM users WHERE username = %s AND email = %s AND password = %s", 
+                           (username, email, password, ))
             results = cursor.fetchall()
             if not results: return 400, Data.Lang.database[lang]["3"]
             id = results[0][0]
             now = results[0][-1]
+            if DEBUG_MODE: print("User successfully created!")
 
             #Setup everything
-
-            #Roles
-            #Settings
-            #Types
+            if DEBUG_MODE: print("Setting up everything...")
+            db.User.Roles.setup(id)
+            db.User.Settings.setup(id)
+            db.User.Type.setup(id)
 
             connection.close()
+            if DEBUG_MODE: print("User successfully setted up!")
 
             return 200, db.User(lang, id, name, username, email, password, now, now)
 
@@ -387,15 +407,16 @@ class db():
             cursor, connection = Connection.connect()
 
             #Validate session_token
+            if DEBUG_MODE: print("Validating session_token...")
             cursor.execute("SELECT * FROM session_tokens WHERE token = %s", (session_token, ))
             results = cursor.fetchall()
-
             if not results: return 400, Data.Lang.database[lang]["4"]
 
             #Get user data
             id = results[0][1]
 
             #Get rest of data
+            if DEBUG_MODE: print("Getting user data...")
             cursor.execute("SELECT * FROM users WHERE id = %s", (id, ))
             results = cursor.fetchall()
 
@@ -410,6 +431,8 @@ class db():
 
             connection.close()
 
+            if DEBUG_MODE: print("User successfully logged in!")
+
             return 200, db.User(lang, id, name, username, email, password, updated_at, created_at)
         
         def sign_in(lang:str, username_or_email:str, password:str):
@@ -419,14 +442,18 @@ class db():
             cursor, connection = Connection.connect()
 
             #Validate data
+            if DEBUG_MODE: print("Validating data...")
             cursor.execute("SELECT * FROM users WHERE (username = %s OR email = %s) AND password = %s", 
                            (username_or_email, username_or_email, password, ))
             results = cursor.fetchall()
 
             #Get missing data
+            if DEBUG_MODE: print("Getting missing data...")
             id = results[0][0]
             expiration = datetime.datetime.now() + datetime.timedelta(days=7)
             
+            #Generate token
+            if DEBUG_MODE: print("Generating token...")
             while True:
                 token = db.User.Session_token.generate(64)
                 cursor.execute("SELECT * FROM session_tokens WHERE token = %s", (token, ))
@@ -434,10 +461,19 @@ class db():
                 if not results: break
 
             #Create session_token
+            if DEBUG_MODE: print("Creating session_token...")
             cursor.execute("INSERT INTO session_tokens (user_id, token, expiration) VALUES (%s, %s, %s);", (id, token, expiration,))
             connection.commit()
 
+            #Check
+            if DEBUG_MODE: print("Checking session_token...")
+            cursor.execute("SELECT * FROM session_tokens WHERE token = %s", (token, ))
+            results = cursor.fetchall()
+            if not results: return 400, Data.Lang.database[lang]["3"]
+
             connection.close()
+
+            if DEBUG_MODE: print("User successfully logged in!")
 
             return 200, token
 
@@ -460,7 +496,17 @@ class db():
             """
             Remove user
             """
-            raise NotImplementedError
+            cursor, connection = Connection.connect()
+
+            if DEBUG_MODE: print("Removing user...")
+            cursor.execute("DELETE FROM users WHERE id = %s AND username = %s AND password = %s;", 
+            #Removing user
+                           (self.id, self.username, self.password, ))
+            connection.commit()
+
+            if DEBUG_MODE: print("User successfully removed!")
+            connection.close()
+            return 200
 
         class Session_token():
             """
@@ -503,7 +549,18 @@ class db():
                 """
                 Setup user roles for new user
                 """
-                raise NotImplementedError
+                cursor, connection = Connection.connect()
+
+                #setup
+                if DEBUG_MODE: print("Setting up user roles...")
+
+                cursor.execute("INSERT INTO user_roles (user_id, is_developer, is_betatester, priority) VALUES (%s, %s, %s, %s);", 
+                               (user_id, False, False, False, ))
+                connection.commit()
+
+                if DEBUG_MODE: print("User roles successfully setted up!")
+                connection.close()
+                return 200
 
             def remove(self):
                 """
@@ -534,7 +591,17 @@ class db():
                 """
                 Setup setting for new user
                 """
-                raise NotImplementedError
+                cursor, connection = Connection.connect()
+
+                #setup
+                if DEBUG_MODE: print("Setting up user settings...")
+
+                cursor.execute("INSERT INTO user_settings (user_id) VALUES (%s);", (user_id, ))
+                connection.commit()
+
+                if DEBUG_MODE: print("User settings successfully setted up!")
+                connection.close()
+                return 200
 
             def remove(self):
                 """
@@ -691,7 +758,17 @@ class db():
                 """
                 Setup for new user
                 """
-                raise NotImplementedError
+                cursor, connection = Connection.connect()
+
+                #setup
+                if DEBUG_MODE: print("Setting up user type...")
+
+                cursor.execute("INSERT INTO user_type (user_id) VALUES (%s);", (user_id, ))
+                connection.commit()
+
+                if DEBUG_MODE: print("User type successfully setted up!")
+                connection.close()
+                return 200
 
             def remove(self):
                 """

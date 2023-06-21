@@ -12,8 +12,7 @@ class Test_loaded_data():
         assert Loaded_data.SYSTEM_DATA
 
     def test_settings(self):
-        #assert Loaded_data.SETTINGS_DATA
-        pass
+        assert Loaded_data.SETTINGS_DATA
 
     def test_env(self):
         assert Loaded_data.ENV_DATA

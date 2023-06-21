@@ -46,6 +46,7 @@ class Data():
         """
         try: open_weather_api_key:str = os.environ["OPEN_WEATHER_API_KEY"]
         except: open_weather_api_key:str = Loaded_data.ENV_DATA["OPEN_WEATHER_API_KEY"]
+        debug_mode:bool = Loaded_data.SETTINGS_DATA["debug_mode"]
 
     class Database():
         """
