@@ -76,7 +76,6 @@ class db_setup():
 
         mycursor = mydb.cursor()
         mycursor.execute(f"CREATE DATABASE {DATABASE}")
-        #mycursor.execute("SET GLOBAL time_zone = %s;", ("Europe/Prague",))
         mydb.close()
         if DEBUG_MODE: report("Database created")
         return 200
@@ -134,7 +133,7 @@ class db_setup():
             user_id INT PRIMARY KEY, 
             display_mode VARCHAR(255) DEFAULT "system", 
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            FOREIGN KEY (user_id) REFERENCES users(id)
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )
         """
         )
@@ -149,7 +148,7 @@ class db_setup():
             token VARCHAR(255), 
             expiration DATETIME,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES users(id)
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )
         """
         )
@@ -164,7 +163,7 @@ class db_setup():
             is_betatester BOOLEAN DEFAULT false,
             priority BOOLEAN DEFAULT false,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            FOREIGN KEY (user_id) REFERENCES users(id)
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )
         """
         )
@@ -177,7 +176,7 @@ class db_setup():
             user_id INT PRIMARY KEY, 
             type INT DEFAULT 000,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            FOREIGN KEY (user_id) REFERENCES users(id)
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )
         """
         )
@@ -192,7 +191,7 @@ class db_setup():
             name VARCHAR(255), 
             description VARCHAR(255) NULL, 
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            FOREIGN KEY (user_id) REFERENCES users(id)
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )
         """
         )
@@ -209,7 +208,7 @@ class db_setup():
             weather_needed VARCHAR(255) NULL,
             datetime DATETIME,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            FOREIGN KEY (calendar_id) REFERENCES calendars(id)
+            FOREIGN KEY (calendar_id) REFERENCES calendars(id) ON DELETE CASCADE
         )
         """
         )
@@ -224,7 +223,7 @@ class db_setup():
             name VARCHAR(255),
             description VARCHAR(255) NULL, 
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            FOREIGN KEY (user_id) REFERENCES users(id)
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )
         """
         )
@@ -240,7 +239,7 @@ class db_setup():
             description VARCHAR(255) NULL, 
             weather_needed VARCHAR(255) NULL, 
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            FOREIGN KEY (list_id) REFERENCES todo_lists(id)
+            FOREIGN KEY (list_id) REFERENCES todo_lists(id) ON DELETE CASCADE
         )
         """
         )
@@ -256,7 +255,7 @@ class db_setup():
             note VARCHAR(255) NULL, 
             delete_at DATETIME NULL,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            FOREIGN KEY (user_id) REFERENCES users(id)
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         )
         """
         )
@@ -286,7 +285,7 @@ class db_setup():
             weather_forecast VARCHAR(255),
             calendar_data VARCHAR(255),
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            FOREIGN KEY (event_id) REFERENCES events(id)
+            FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
         )
         """
         )
