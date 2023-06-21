@@ -13,11 +13,11 @@ jobs:
           python-version: 3.11
       - name: Set secrets
         run: |
-          OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }}
-          DATABASE_HOST=${{ secrets.DATABASE_HOST }}
-          DATABASE_PORT=${{ secrets.DATABASE_PORT }}
-          DATABASE_USER=${{ secrets.DATABASE_USER }}
-          DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+          echo "OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }}" >> $GITHUB_ENV
+          echo "DATABASE_HOST=${{ secrets.DATABASE_HOST }}" >> $GITHUB_ENV
+          echo "DATABASE_PORT=${{ secrets.DATABASE_PORT }}" >> $GITHUB_ENV
+          echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" >> $GITHUB_ENV
+          echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> $GITHUB_ENV
       - name: Upgrade pip
         run: pip install --upgrade pip
       - name: Run custom installer
