@@ -7,7 +7,7 @@ response will be:
 """
 
 from Backend.core_helper import *
-import mysql.connector, datetime
+import mysql.connector, datetime, string, random
 
 HOST = Data.Database.host
 PORT = Data.Database.port
@@ -355,12 +355,28 @@ class db():
             if results:
                 return 400, Data.Lang.database[lang]["2"]
 
-            now = datetime.datetime.now().timestamp()
             #Create user
+            cursor.execute(
+            f"""
+            INSERT INTO users (name, username, email, password) VALUES (%s, %s, %s, %s);
+            """, (name, username, email, password,)
+            )
+            connection.commit()
 
-            id = ""
-            
+            #Check
+            cursor.execute("SELECT * FROM users WHERE username = %s AND email = %s AND password = %s", (username, email, password, ))
+            results = cursor.fetchall()
+            if not results: return 400, Data.Lang.database[lang]["3"]
+            id = results[0][0]
+            now = results[0][-1]
+
             #Setup everything
+
+            #Roles
+            #Settings
+            #Types
+
+            connection.close()
 
             return 200, db.User(lang, id, name, username, email, password, now, now)
 
@@ -368,17 +384,31 @@ class db():
             """
             Login user using session_token
             """
+            cursor, connection = Connection.connect()
 
             #Validate session_token
+            cursor.execute("SELECT * FROM session_tokens WHERE token = %s", (session_token, ))
+            results = cursor.fetchall()
+
+            if not results: return 400, Data.Lang.database[lang]["4"]
 
             #Get user data
-            id = ""
-            name = ""
-            username = ""
-            email = ""
-            password = ""
-            updated_at = ""
-            created_at = ""
+            id = results[0][1]
+
+            #Get rest of data
+            cursor.execute("SELECT * FROM users WHERE id = %s", (id, ))
+            results = cursor.fetchall()
+
+            if not results: return 400, Data.Lang.database[lang]["5"]
+
+            name = results[0][1]
+            username = results[0][2]
+            email = results[0][3]
+            password = results[0][4]
+            updated_at = results[0][5]
+            created_at = results[0][6]
+
+            connection.close()
 
             return 200, db.User(lang, id, name, username, email, password, updated_at, created_at)
         
@@ -386,20 +416,30 @@ class db():
             """
             Login user - add session token
             """
+            cursor, connection = Connection.connect()
 
             #Validate data
+            cursor.execute("SELECT * FROM users WHERE (username = %s OR email = %s) AND password = %s", 
+                           (username_or_email, username_or_email, password, ))
+            results = cursor.fetchall()
 
             #Get missing data
-            id = ""
-            name = ""
-            username = ""
-            email = ""
-            updated_at = ""
-            created_at = ""
+            id = results[0][0]
+            expiration = datetime.datetime.now() + datetime.timedelta(days=7)
+            
+            while True:
+                token = db.User.Session_token.generate(64)
+                cursor.execute("SELECT * FROM session_tokens WHERE token = %s", (token, ))
+                results = cursor.fetchall()
+                if not results: break
 
             #Create session_token
+            cursor.execute("INSERT INTO session_tokens (user_id, token, expiration) VALUES (%s, %s, %s);", (id, token, expiration,))
+            connection.commit()
 
-            return 200, db.User(lang, id, name, username, email, password, updated_at, created_at)
+            connection.close()
+
+            return 200, token
 
         def edit(self, name:str=None, username:str=None, email:str=None, password:str=None):
             """
@@ -429,11 +469,10 @@ class db():
             def __init__(self, user):
                 self.user = user
 
-            def add(self, session_token):
-                """
-                Add session token
-                """
-                raise NotImplementedError
+            def generate(length:int):
+                chars = string.ascii_letters + string.digits
+                random_str = ''.join(random.choice(chars) for _ in range(length))
+                return random_str
 
             def remove(self, session_token):
                 """
