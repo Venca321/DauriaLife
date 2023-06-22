@@ -1,11 +1,24 @@
 
 from Backend.core import *
-import os, time, multiprocessing, signal
+import os, time, multiprocessing, signal, sys
+
+def console_task():
+    while True:
+        user_input = input("")
+        sys.stdout.write("\033[F")
+        print(f">>> {user_input}")
+        if user_input == "exit" or user_input == "stop": handle_exit(None, None)
+        else: 
+            response = process(user_input)
+            if response:
+                report(response)
 
 def tester_task():
     while True:
         time.sleep(5*60)
-        if not Tests.run(): raise NotImplementedError
+        if not Tests.run():
+            report(f"{colors.ERROR}Tests failed. Stopping system...")
+            handle_exit(None, None)
 
 def weather_updater_task():
     WEATHER_DELAY = Data.Weather.update_time_minutes*60
@@ -18,11 +31,11 @@ def weather_updater_task():
         time.sleep(WEATHER_DELAY-(time.time()-start))
 
 def handle_exit(signum, frame):
-
     #Stop sveltekit
     WEATHER_UPDATER_TASK.kill()
+    TESTER_TASK.kill()
 
-    report(f"\n{colors.WARNING}System stopped successfully.{colors.NORMAL}\n")
+    report(f"{colors.WARNING}System stopped successfully.{colors.NORMAL}\n")
     os._exit(1)
 
 if __name__ == "__main__":
@@ -41,4 +54,8 @@ if __name__ == "__main__":
     WEATHER_UPDATER_TASK = multiprocessing.Process(target=weather_updater_task, daemon=True)
     WEATHER_UPDATER_TASK.start()
 
-    tester_task()
+    #Tester task
+    TESTER_TASK = multiprocessing.Process(target=tester_task, daemon=True)
+    TESTER_TASK.start()
+
+    console_task()
