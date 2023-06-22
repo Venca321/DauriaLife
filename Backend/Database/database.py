@@ -1003,5 +1003,21 @@ class db():
         """
         Manage system recomendations
         """
-        pass
+        def create(usertype:int, event_id, weather_forecast, calendar_data):
+            """
+            Create recomendation record
+            """
+            raise NotImplementedError
+        
+        def get_all():
+            """
+            Show all recomendation records
+            """
+            raise NotImplementedError
+        
+        def remove(id):
+            """
+            Remove recomendation record
+            """
+            raise NotImplementedError
     
