@@ -3,5 +3,7 @@
     "2": "Uživatelské jméno již existuje",
     "3": "Database error",
     "4": "Session token neexistuje",
-    "5": "Uživetel neexistuje"
+    "5": "Uživetel neexistuje",
+    "6": "Kalendář již existuje",
+    "7": "Zázname již existuje"
 }

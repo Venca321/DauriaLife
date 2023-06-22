@@ -260,25 +260,11 @@ class db_setup():
         """
         )
 
-        #weather_recomendations
-        if DEBUG_MODE: report("Creating weather_recomendations table...")
+        #recomendations
+        if DEBUG_MODE: report("Creating recomendations table...")
         cursor.execute(
         """
-        CREATE TABLE weather_recomendations (
-            id INT AUTO_INCREMENT PRIMARY KEY, 
-            name VARCHAR(255),
-            description VARCHAR(255),
-            weather VARCHAR(255) NULL,
-            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-        )
-        """
-        )
-
-        #date_recomendations
-        if DEBUG_MODE: report("Creating date_recomendations table...")
-        cursor.execute(
-        """
-        CREATE TABLE date_recomendations (
+        CREATE TABLE recomendations (
             id INT AUTO_INCREMENT PRIMARY KEY, 
             user_type INT,
             event_id INT,
@@ -363,6 +349,7 @@ class db():
             cursor.execute("SELECT * FROM users WHERE email = %s", (email, ))
             results = cursor.fetchall()
             if results:
+                connection.close()
                 return 400, Data.Lang.database[lang]["1"]
 
             #Validate username
@@ -370,6 +357,7 @@ class db():
             cursor.execute("SELECT * FROM users WHERE username = %s", (username, ))
             results = cursor.fetchall()
             if results:
+                connection.close()
                 return 400, Data.Lang.database[lang]["2"]
 
             #Create user
@@ -383,7 +371,9 @@ class db():
             cursor.execute("SELECT * FROM users WHERE username = %s AND email = %s AND password = %s", 
                            (username, email, password, ))
             results = cursor.fetchall()
-            if not results: return 400, Data.Lang.database[lang]["3"]
+            if not results: 
+                connection.close()
+                return 400, Data.Lang.database[lang]["3"]
             id = results[0][0]
             now = results[0][-1]
             if DEBUG_MODE: report("User successfully created!")
@@ -409,7 +399,9 @@ class db():
             if DEBUG_MODE: report("Validating session_token...")
             cursor.execute("SELECT * FROM session_tokens WHERE token = %s", (session_token, ))
             results = cursor.fetchall()
-            if not results: return 400, Data.Lang.database[lang]["4"]
+            if not results: 
+                connection.close()
+                return 400, Data.Lang.database[lang]["4"]
 
             #Get user data
             id = results[0][1]
@@ -419,7 +411,9 @@ class db():
             cursor.execute("SELECT * FROM users WHERE id = %s", (id, ))
             results = cursor.fetchall()
 
-            if not results: return 400, Data.Lang.database[lang]["5"]
+            if not results:
+                connection.close() 
+                return 400, Data.Lang.database[lang]["5"]
 
             name = results[0][1]
             username = results[0][2]
@@ -468,7 +462,9 @@ class db():
             if DEBUG_MODE: report("Checking session_token...")
             cursor.execute("SELECT * FROM session_tokens WHERE token = %s", (token, ))
             results = cursor.fetchall()
-            if not results: return 400, Data.Lang.database[lang]["3"]
+            if not results: 
+                connection.close()
+                return 400, Data.Lang.database[lang]["3"]
 
             connection.close()
 
@@ -523,7 +519,17 @@ class db():
                 """
                 Remove session token
                 """
-                raise NotImplementedError
+                cursor, connection = Connection.connect()
+
+                #Remove session token
+                if DEBUG_MODE: report("Removing session token...")
+                cursor.execute("DELETE FROM session_tokens WHERE user_id = %s AND token = %s;", (self.user.id, session_token, ))
+                connection.commit()
+
+                if DEBUG_MODE: report("Session token successfully removed!")
+
+                connection.close()
+                return 200
 
         class Roles():
             """
@@ -536,7 +542,21 @@ class db():
                 """
                 Get user roles
                 """
-                raise NotImplementedError
+                cursor, connection = Connection.connect()
+
+                #Get user roles
+                if DEBUG_MODE: report("Getting user roles...")
+                cursor.execute("SELECT * FROM user_roles WHERE user_id = %s;", (self.user.id, ))
+                results = cursor.fetchall()
+
+                if not results:
+                    connection.close()
+                    return 400, Data.Lang.database[self.user.lang]["3"]
+                
+                if DEBUG_MODE: report("User roles successfully getted!")
+                
+                connection.close()
+                return 200, results
 
             def edit(self):
                 """
@@ -561,12 +581,6 @@ class db():
                 connection.close()
                 return 200
 
-            def remove(self):
-                """
-                Remove on user removal
-                """
-                raise NotImplementedError
-
         class Settings():
             """
             Manage user settings
@@ -578,7 +592,21 @@ class db():
                 """
                 Get user settings
                 """
-                raise NotImplementedError
+                cursor, connection = Connection.connect()
+
+                #Get user settings
+                if DEBUG_MODE: report("Getting user settings...")
+                cursor.execute("SELECT * FROM user_settings WHERE user_id = %s;", (self.user.id, ))
+                results = cursor.fetchall()
+
+                if not results:
+                    connection.close()
+                    return 400, Data.Lang.database[self.user.lang]["3"]
+                
+                if DEBUG_MODE: report("User settings successfully getted!")
+
+                connection.close()
+                return 200, results
 
             def edit(self):
                 """
@@ -602,25 +630,99 @@ class db():
                 connection.close()
                 return 200
 
-            def remove(self):
-                """
-                Remove on user removal
-                """
-                raise NotImplementedError
-
         class Calendar():
             """
             Manage calendar related
             """
             def __init__(self, user):
                 self.user = user
-                self.event = self.Event(self)
+                self.event = self.Event(user, self)
 
-            def get(self):
+                self.id = ""
+                self.user_id = ""
+                self.name = ""
+                self.description = ""
+                self.updated_at = ""
+
+            def create(self, name:str, description:str=None):
+                """
+                Create calendar
+                """
+                cursor, connection = Connection.connect()
+
+                #Check if calendar already exists
+                if DEBUG_MODE: report("Checking if calendar already exists...")
+                cursor.execute("SELECT * FROM calendars WHERE user_id = %s AND name = %s;",
+                                 (self.user.id, name,))
+                results = cursor.fetchall()
+                if results: 
+                    connection.close()
+                    return 400, Data.Lang.database[self.user.lang]["6"]
+
+                #setup
+                if DEBUG_MODE: report("Creating calendar...")
+                cursor.execute("INSERT INTO calendars (user_id, name, description) VALUES (%s, %s, %s);", 
+                               (self.user.id, name, description,))
+                connection.commit()
+
+                if DEBUG_MODE: report("Getting calendar id...")
+                cursor.execute("SELECT * FROM calendars WHERE user_id = %s AND name = %s AND description = %s;", 
+                               (self.user.id, name, description,))
+                results = cursor.fetchall()
+                if not results: 
+                    connection.close()
+                    return 400, Data.Lang.database[self.user.lang]["3"]
+
+                self.id = results[0][0]
+                self.user_id = results[0][1]
+                self.name = results[0][2]
+                self.description = results[0][3]
+                self.updated_at = results[0][4]
+
+                if DEBUG_MODE: report("Calendar successfully created!")
+                connection.close()
+                return 200, self
+
+            def get_all(self):
+                """
+                Get all calendars
+                """
+                cursor, connection = Connection.connect()
+                
+                #Load calendar
+                if DEBUG_MODE: report("Loading calendars...")
+                cursor.execute("SELECT * FROM calendars WHERE user_id = %s;", (self.user.id,))
+                results = cursor.fetchall()
+                if not results: 
+                    connection.close()
+                    return 400, Data.Lang.database[self.user.lang]["3"]
+
+                connection.close()
+                return 200, results
+
+            def get(self, name_or_id):
                 """
                 Get calendar
                 """
-                raise NotImplementedError
+                cursor, connection = Connection.connect()
+                
+                #Load calendar
+                if DEBUG_MODE: report("Loading calendar...")
+                cursor.execute("SELECT * FROM calendars WHERE user_id = %s AND (name = %s OR id = %s);",
+                                (self.user.id, name_or_id, name_or_id,))
+                results = cursor.fetchall()
+                if not results: 
+                    connection.close()
+                    return 400, Data.Lang.database[self.user.lang]["3"]
+
+                self.id = results[0][0]
+                self.user_id = results[0][1]
+                self.name = results[0][2]
+                self.description = results[0][3]
+                self.updated_at = results[0][4]
+
+                connection.close()
+                return 200, self
 
             def edit(self):
                 """
@@ -632,20 +734,124 @@ class db():
                 """
                 Remove calendar
                 """
-                raise NotImplementedError
+                cursor, connection = Connection.connect()
+
+                #Remove calendar
+                if DEBUG_MODE: report("Removing calendar...")
+                cursor.execute("DELETE FROM calendars WHERE id = %s;", (self.id,))
+                connection.commit()
+
+                if DEBUG_MODE: report("Calendar successfully removed!")
+
+                connection.close()
+                return 200
 
             class Event():
                 """
                 Manage events in calendar
                 """
-                def __init__(self, calendar):
+                def __init__(self, user, calendar):
+                    self.user = user
                     self.calendar = calendar
 
-                def get(self):
+                    self.id = ""
+                    self.calendar_id = ""
+                    self.name = ""
+                    self.description = ""
+                    self.weather = ""
+                    self.datetime = ""
+                    self.updated_at = ""
+
+                def create(self, name:str, description:str=None, weather=None, datetime=None):
+                    """
+                    Create event
+                    """
+                    cursor, connection = Connection.connect()
+
+                    #Check if event already exists
+                    if DEBUG_MODE: report("Checking if event already exists...")
+                    cursor.execute("SELECT * FROM events WHERE calendar_id = %s AND name = %s AND datetime = %s;",
+                                    (self.calendar.id, name, datetime,))
+                    results = cursor.fetchall()
+
+                    #If event already exists, return 400
+                    if results:
+                        connection.close()
+                        return 400, Data.Lang.database[self.user.lang]["7"]
+
+                    #Create event
+                    if DEBUG_MODE: report("Creating event...")
+                    cursor.execute("INSERT INTO events (calendar_id, name, description, weather, datetime) VALUES (%s, %s, %s, %s, %s);",
+                                    (self.calendar.id, name, description, weather, datetime,))
+                    connection.commit()
+
+                    #Get event id
+                    if DEBUG_MODE: report("Getting event id...")
+                    cursor.execute("SELECT * FROM events WHERE calendar_id = %s AND name = %s AND datetime = %s;",
+                                    (self.calendar.id, name, datetime,))
+                    results = cursor.fetchall()
+
+                    if not results:
+                        connection.close()
+                        return 400, Data.Lang.database[self.user.lang]["3"]
+                    
+                    self.id = results[0][0]
+                    self.calendar_id = results[0][1]
+                    self.name = results[0][2]
+                    self.description = results[0][3]
+                    self.weather = results[0][4]
+                    self.datetime = results[0][5]
+                    self.updated_at = results[0][6]
+
+                    if DEBUG_MODE: report("Event successfully created!")
+
+                    connection.close()
+                    return 200, self
+                
+                def get_all(self):
+                    """
+                    Get all events
+                    """
+                    cursor, connection = Connection.connect()
+
+                    #Load events
+                    if DEBUG_MODE: report("Loading events...")
+                    cursor.execute("SELECT * FROM events WHERE calendar_id = %s;", (self.calendar.id,))
+                    results = cursor.fetchall()
+
+                    if DEBUG_MODE: report("Events successfully loaded!")
+
+                    connection.close()
+                    return 200, results
+
+                def get(self, id_or_name_and_datetime, datetime=None):
                     """
                     Get event
                     """
-                    raise NotImplementedError
+                    cursor, connection = Connection.connect()
+
+                    #Load event
+                    if DEBUG_MODE: report("Loading event...")
+                    cursor.execute("SELECT * FROM events WHERE id = %s OR (name = %s AND datetime = %s);",
+                                    (id_or_name_and_datetime, id_or_name_and_datetime, datetime))
+                    results = cursor.fetchall()
+
+                    if not results:
+                        connection.close()
+                        return 400, Data.Lang.database[self.user.lang]["3"]
+                    
+                    self.id = results[0][0]
+                    self.calendar_id = results[0][1]
+                    self.name = results[0][2]
+                    self.description = results[0][3]
+                    self.weather = results[0][4]
+                    self.datetime = results[0][5]
+                    self.updated_at = results[0][6]
+
+                    if DEBUG_MODE: report("Event successfully loaded!")
+
+                    connection.close()
+                    return 200, self
 
                 def edit(self):
                     """
@@ -657,7 +863,17 @@ class db():
                     """
                     Remove event
                     """
-                    raise NotImplementedError
+                    cursor, connection = Connection.connect()
+
+                    #Remove event
+                    if DEBUG_MODE: report("Removing event...")
+                    cursor.execute("DELETE FROM events WHERE id = %s;", (self.id,))
+                    connection.commit()
+
+                    if DEBUG_MODE: report("Event successfully removed!")
+
+                    connection.close()
+                    return 200
 
         class Todo_list():
             """
@@ -745,7 +961,21 @@ class db():
                 """
                 Get user type
                 """
-                raise NotImplementedError
+                cursor, connection = Connection.connect()
+
+                #Get user type
+                if DEBUG_MODE: report("Getting user type...")
+                cursor.execute("SELECT * FROM user_type WHERE user_id = %s;", (self.user.id,))
+                results = cursor.fetchall()
+
+                if not results:
+                    connection.close()
+                    return 400, Data.Lang.database[self.user.lang]["3"]
+                
+                if DEBUG_MODE: report("User type successfully loaded!")
+
+                connection.close()
+                return 200, results
 
             def edit(self):
                 """
@@ -768,12 +998,6 @@ class db():
                 if DEBUG_MODE: report("User type successfully setted up!")
                 connection.close()
                 return 200
-
-            def remove(self):
-                """
-                Remove 
-                """
-                raise NotImplementedError
 
     class Recomendations():
         """
