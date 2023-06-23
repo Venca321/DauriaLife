@@ -266,11 +266,12 @@ class db_setup():
         """
         CREATE TABLE recomendations (
             id INT AUTO_INCREMENT PRIMARY KEY, 
-            user_type INT,
+            user_id INT,
             event_id INT,
             weather_forecast VARCHAR(255),
             calendar_data VARCHAR(255),
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
             FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
         )
         """
@@ -1094,7 +1095,7 @@ class db():
         """
         Manage system recomendations
         """
-        def create(usertype:int, event_id, weather_forecast, calendar_data):
+        def create(user_id, event_id, weather_forecast, calendar_data):
             """
             Create recomendation record
             """
@@ -1102,8 +1103,8 @@ class db():
 
             #Create recomendation
             if DEBUG_MODE: report("Creating recomendation...")
-            cursor.execute("INSERT INTO recomendations (usertype, event_id, weather_forecast, calendar_data) VALUES (%s, %s, %s, %s);",
-                            (usertype, event_id, weather_forecast, calendar_data,))
+            cursor.execute("INSERT INTO recomendations (user_id, event_id, weather_forecast, calendar_data) VALUES (%s, %s, %s, %s);",
+                            (user_id, event_id, weather_forecast, calendar_data,))
             connection.commit()
 
             if DEBUG_MODE: report("Recomendation successfully created!")

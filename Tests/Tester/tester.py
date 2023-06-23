@@ -17,7 +17,7 @@ class Core():
                 return False
         elif output: print(f"     {name} {'.'*(26-len(name))} {colors.WARNING}skipped{colors.NORMAL}")
 
-        time.sleep(0.1)
+        time.sleep(0.2)
         return True
 
 class Tests():
@@ -76,16 +76,16 @@ class Tests():
         Run all tests
         """
         DATABASE = True #if False test will be skipped
-        FLASK = False
-        SVELTEKIT = False
+        FLASK = True
+        SVELTEKIT = True
         OVERALL = False
+
+        time.sleep(0.5)
 
         errors, done_tests = 0, 0
         start = time.time()
 
         if output: print(f" Testing system:{colors.NORMAL} ")
-
-        time.sleep(0.6)
 
         #Database
         if not Core.outputer(output, DATABASE, "Database server", "Tests.database()"):

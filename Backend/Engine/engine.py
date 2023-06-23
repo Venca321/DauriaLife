@@ -5,9 +5,19 @@ Engine module for the smart callendar system
 
 from Backend.core import *
 
+class Data_loader():
+    def user_type():
+        pass
+
+    def recommendation():
+        pass
+
+    def datetime():
+        pass
+
 class Engine():
     class UserType():
-        def process(user:db.User):
+        def process():
             pass
 
     class Recommendations():
