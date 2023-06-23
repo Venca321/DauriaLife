@@ -558,11 +558,42 @@ class db():
                 connection.close()
                 return 200, results
 
-            def edit(self):
+            def edit(self, is_developer:bool=None, is_betatester:bool=None, priority:bool=None):
                 """
                 Edit user roles
                 """
-                raise NotImplementedError
+                cursor, connection = Connection.connect()
+
+                #Get user roles
+                if DEBUG_MODE: report("Getting user roles...")
+                cursor.execute("SELECT * FROM user_roles WHERE user_id = %s;", (self.user.id, ))
+                results = cursor.fetchall()
+                if not results:
+                    connection.close()
+                    return 400, Data.Lang.database[self.user.lang]["3"]
+
+                if not is_developer: is_developer = results[0][2]
+                if not is_betatester: is_betatester = results[0][3]
+                if not priority: priority = results[0][4]
+
+                #Edit user roles
+                if DEBUG_MODE: report("Editing user roles...")
+                cursor.execute("UPDATE user_roles SET is_developer = %s, is_betatester = %s, priority = %s WHERE user_id = %s;",
+                                 (is_developer, is_betatester, priority, self.user.id, ))
+                connection.commit()
+
+                #Check
+                if DEBUG_MODE: report("Checking record...")
+                cursor.execute("SELECT * FROM user_roles WHERE user_id = %s;", (self.user.id, ))
+                results = cursor.fetchall()
+                if not results:
+                    connection.close()
+                    return 400, Data.Lang.database[self.user.lang]["3"]
+
+                if DEBUG_MODE: report("User roles successfully edited!")
+
+                connection.close()
+                return 200, results
 
             def setup(user_id:str):
                 """
@@ -578,6 +609,80 @@ class db():
                 connection.commit()
 
                 if DEBUG_MODE: report("User roles successfully setted up!")
+                connection.close()
+                return 200
+            
+        class Type():
+            """
+            Manage user type
+            """
+            def __init__(self, user):
+                self.user = user
+
+            def get(self):
+                """
+                Get user type
+                """
+                cursor, connection = Connection.connect()
+
+                #Get user type
+                if DEBUG_MODE: report("Getting user type...")
+                cursor.execute("SELECT * FROM user_type WHERE user_id = %s;", (self.user.id,))
+                results = cursor.fetchall()
+
+                if not results:
+                    connection.close()
+                    return 400, Data.Lang.database[self.user.lang]["3"]
+                
+                if DEBUG_MODE: report("User type successfully loaded!")
+
+                connection.close()
+                return 200, results
+
+            def edit(self, type:int=None):
+                """
+                Edit user type
+                """
+                cursor, connection = Connection.connect()
+
+                #Read
+                if DEBUG_MODE: report("Reading user type")
+                cursor.execute("SELECT * FROM user_type WHERE user_id = %s;", (self.user.id,))
+                results = cursor.fetchall()
+                if not results:
+                    connection.close()
+                    return 400, Data.Lang.database[self.user.lang]["3"]
+                
+                if not user_type: user_type = results[0][1]
+
+                #Edit
+                if DEBUG_MODE: report("Editing user type...")
+                cursor.execute("UPDATE user_type SET type = %s WHERE user_id = %s;", (type, self.user.id,))
+                connection.commit()
+
+                #Check
+                if DEBUG_MODE: report("Checking user type...")
+                cursor.execute("SELECT * FROM user_type WHERE user_id = %s;", (self.user.id,))
+                results = cursor.fetchall()
+
+                if DEBUG_MODE: report("User type successfully edited!")
+
+                connection.close()
+                return 200, results
+
+            def setup(user_id:str):
+                """
+                Setup for new user
+                """
+                cursor, connection = Connection.connect()
+
+                #setup
+                if DEBUG_MODE: report("Setting up user type...")
+
+                cursor.execute("INSERT INTO user_type (user_id) VALUES (%s);", (user_id, ))
+                connection.commit()
+
+                if DEBUG_MODE: report("User type successfully setted up!")
                 connection.close()
                 return 200
 
@@ -608,11 +713,40 @@ class db():
                 connection.close()
                 return 200, results
 
-            def edit(self):
+            def edit(self, display_mode:str=None):
                 """
                 Edit user settings
                 """
-                raise NotImplementedError
+                cursor, connection = Connection.connect()
+
+                #Read
+                if DEBUG_MODE: report("Reading user settings...")
+                cursor.execute("SELECT * FROM user_settings WHERE user_id = %s;", (self.user.id, ))
+                results = cursor.fetchall()
+                if not results:
+                    connection.close()
+                    return 400, Data.Lang.database[self.user.lang]["3"]
+
+                if not display_mode: display_mode = results[0][1]
+
+                #Edit
+                if DEBUG_MODE: report("Editing user settings...")
+                cursor.execute("UPDATE user_settings SET display_mode = %s WHERE user_id = %s;",
+                                 (display_mode, self.user.id, ))
+                connection.commit()
+
+                #Check
+                if DEBUG_MODE: report("Checking user settings...")
+                cursor.execute("SELECT * FROM user_settings WHERE user_id = %s;", (self.user.id, ))
+                results = cursor.fetchall()
+                if not results:
+                    connection.close()
+                    return 400, Data.Lang.database[self.user.lang]["3"]
+
+                if DEBUG_MODE: report("User settings successfully edited!")
+
+                connection.close()
+                return 200, results
 
             def setup(user_id:str):
                 """
@@ -949,55 +1083,6 @@ class db():
                 Remove note
                 """
                 raise NotImplementedError
-
-        class Type():
-            """
-            Manage user type
-            """
-            def __init__(self, user):
-                self.user = user
-
-            def get(self):
-                """
-                Get user type
-                """
-                cursor, connection = Connection.connect()
-
-                #Get user type
-                if DEBUG_MODE: report("Getting user type...")
-                cursor.execute("SELECT * FROM user_type WHERE user_id = %s;", (self.user.id,))
-                results = cursor.fetchall()
-
-                if not results:
-                    connection.close()
-                    return 400, Data.Lang.database[self.user.lang]["3"]
-                
-                if DEBUG_MODE: report("User type successfully loaded!")
-
-                connection.close()
-                return 200, results
-
-            def edit(self):
-                """
-                Edit user type
-                """
-                raise NotImplementedError
-
-            def setup(user_id:str):
-                """
-                Setup for new user
-                """
-                cursor, connection = Connection.connect()
-
-                #setup
-                if DEBUG_MODE: report("Setting up user type...")
-
-                cursor.execute("INSERT INTO user_type (user_id) VALUES (%s);", (user_id, ))
-                connection.commit()
-
-                if DEBUG_MODE: report("User type successfully setted up!")
-                connection.close()
-                return 200
 
     class Recomendations():
         """
