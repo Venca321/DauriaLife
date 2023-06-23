@@ -281,6 +281,9 @@ class db_setup():
         return 200
 
 class db():
+    """
+    MySQL database manager
+    """
     class System_info():
         """
         Manage system info in database
