@@ -939,6 +939,9 @@ class db():
 
                     if DEBUG_MODE: report("Event successfully created!")
 
+                    #Create recomendation record
+                    #db.Recomendations.create(self.user.type, self.id, [], [])
+
                     connection.close()
                     return 200, self
                 
@@ -1092,17 +1095,48 @@ class db():
             """
             Create recomendation record
             """
-            raise NotImplementedError
+            cursor, connection = Connection.connect()
+
+            #Create recomendation
+            if DEBUG_MODE: report("Creating recomendation...")
+            cursor.execute("INSERT INTO recomendations (usertype, event_id, weather_forecast, calendar_data) VALUES (%s, %s, %s, %s);",
+                            (usertype, event_id, weather_forecast, calendar_data,))
+            connection.commit()
+
+            if DEBUG_MODE: report("Recomendation successfully created!")
+
+            connection.close()
+            return 200
         
         def get_all():
             """
             Show all recomendation records
             """
-            raise NotImplementedError
+            cursor, connection = Connection.connect()
+
+            #Load recomendations
+            if DEBUG_MODE: report("Loading recomendations...")
+            cursor.execute("SELECT * FROM recomendations;")
+            results = cursor.fetchall()
+
+            if DEBUG_MODE: report("Recomendations successfully loaded!")
+
+            connection.close()
+            return 200, results
         
         def remove(id):
             """
             Remove recomendation record
             """
-            raise NotImplementedError
+            cursor, connection = Connection.connect()
+
+            #Remove recomendation
+            if DEBUG_MODE: report("Removing recomendation...")
+            cursor.execute("DELETE FROM recomendations WHERE id = %s;", (id,))
+            connection.commit()
+
+            if DEBUG_MODE: report("Recomendation successfully removed!")
+
+            connection.close()
+            return 200
     
