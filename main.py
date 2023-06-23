@@ -2,7 +2,10 @@
 from Backend.core import *
 import os, time, multiprocessing, signal, sys
 
+DEBUG_MODE = Data.Settings.debug_mode
+
 def console_task():
+    if DEBUG_MODE: report("Started console")
     while True:
         user_input = input("")
         sys.stdout.write("\033[F")
@@ -14,6 +17,7 @@ def console_task():
                 report(response)
 
 def tester_task():
+    if DEBUG_MODE: report("Started automatic testing")
     while True:
         time.sleep(5*60)
         if not Tests.run():
@@ -21,13 +25,14 @@ def tester_task():
             handle_exit(None, None)
 
 def weather_updater_task():
+    if DEBUG_MODE: report("Started weather updater")
     WEATHER_DELAY = Data.Weather.update_time_minutes*60
     time.sleep(10)
     while True:
-        report("Updating weather data...")
+        if DEBUG_MODE: report("Updating weather data...")
         start = time.time()
         if weather.update():
-            report("Weather data updated successfully.")
+            if DEBUG_MODE: report("Weather data updated successfully.")
         time.sleep(WEATHER_DELAY-(time.time()-start))
 
 def handle_exit(signum, frame):
