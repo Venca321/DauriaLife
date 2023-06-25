@@ -1,40 +1,22 @@
 html {
-    background-color: var(--color-background);
+    background-color: var(--primary);
     touch-action: manipulation;
     scroll-behavior: smooth;
 }
 
 h1 {
-    color: var(--color-text);
     font-family: Arial;
     font-style: bold;
 }
 
 p {
-    color: var(--color-text);
     font-family: Arial;
     font-style: normal;
 }
 
 a {
-    color: var(--color-text);
     font-family: Arial;
     font-style: normal;
-}
-
-input,
-select,
-textarea {
-    color: var(--color-text);
-    font-family: Arial;
-}
-
-input {
-    background-color: var(--color-gray);
-}
-
-button {
-    background-color: var(--color-gray);
 }
 
 .error {
@@ -42,7 +24,7 @@ button {
     top: 10px;
     right: 20px;
     z-index: 999999999999;
-    background-color: var(--color-error);
+    background-color: #ff370068;
     width: fit-content;
     padding: 10px 10px 10px 10px;
     border-radius: 15px;

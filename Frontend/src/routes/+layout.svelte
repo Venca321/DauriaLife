@@ -6,12 +6,11 @@
 
 <style>
 	:global(:root) {
-		--color-background: #24242f;
-		--color-text: #ffffff;
-		--color-error: #ff370068;
-
-        --color-gray: #626280;
-        --color-primary: #42b17d;
-        --color-secondary: #d3e71d;
+		--primary: #444444;
+		--on-primary: #F5F5F5;
+		--secondary: #323232;
+		--on-secondary: #E8E8E8;
+		--tertiary: #FFB800;
+		--on-tertiary: #363636;
 	}
 </style>

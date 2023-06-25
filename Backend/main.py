@@ -4,18 +4,6 @@ import os, time, multiprocessing
 
 DEBUG_MODE = Data.Settings.debug_mode
 
-def console_task():
-    while True:
-        time.sleep(1)
-        """user_input = input("")
-        sys.stdout.write("\033[F")
-        print(f">>> {user_input}")
-        if user_input == "exit" or user_input == "stop": handle_exit(None, None)
-        else: 
-            response = process(user_input)
-            if response:
-                report(response)"""
-
 def tester_task():
     while True:
         time.sleep(5*60)
