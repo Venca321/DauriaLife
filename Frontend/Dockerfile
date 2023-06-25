@@ -1,11 +1,11 @@
-FROM node:20-alpine as base
+FROM node:20.3.1-alpine as base
 
 WORKDIR /web
 
 COPY . .
 
-RUN npm install -g npm@9.7.2
-RUN npm install
+RUN npm install -g npm
+RUN npm install --save-dev --ignore-scripts
 
 RUN npm run build
 
