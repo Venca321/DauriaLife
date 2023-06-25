@@ -4,11 +4,10 @@
 
     export let data;
     const lang = data.lang
+    const langset = translations[lang]
 </script>
 
 <svelte:head>
-    <title>{translations[lang]["title"]}</title>
+    <title>{langset["title"]}</title>
     <meta name="author" content="DauriaLife" />
 </svelte:head>
-
-<p>{lang}</p>

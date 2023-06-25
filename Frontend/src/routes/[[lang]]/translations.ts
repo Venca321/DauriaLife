@@ -1,9 +1,15 @@
 export default {
     cz: {
-      "title": "Ahoj, světe!",
+      "about": "O nás",
+      "product": "Produkt",
+      "pro": "Pro",
+      "start": "Začít",
     },
     en: {
-      "title": "Hello, World!",
+      "about": "About us",
+      "product": "Product",
+      "pro": "Pro",
+      "start": "Start",
     },
   };
   

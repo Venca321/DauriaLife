@@ -1,9 +1,9 @@
 export default {
     cz: {
-      "title": "Přihlášení",
+      "title": "Odhlášení",
     },
     en: {
-      "title": "Login",
+      "title": "Logout",
     },
   };
   
