@@ -10,9 +10,9 @@ Cílem tohoto projektu je vytvořit chytrý kalendář, který bude doporučovat
 
 ### Jak spustit:
 
-Budete potřebovat nainstalovaný Docker \
-Postavte docker pomocí `docker build . -t dauria-life` \
-Spusťte docker pomocí `docker run dauria-life`
+Budete potřebovat nainstalovaný Docker a docker-compose \
+Postavte docker pomocí `docker-compose build` \
+Spusťte docker pomocí `docker-compose up -d`
 
 ---
 
@@ -39,9 +39,9 @@ Coming soon
 
 ### How to run:
 
-You will need Docker installed \
-Build docker using `docker build . -t dauria-life` \
-Run docker using `docker run dauria-life`
+You will need Docker and docker-compose installed \
+Build docker using `docker-compose build` \
+Run docker using `docker-compose up -d`
 
 ---
 
