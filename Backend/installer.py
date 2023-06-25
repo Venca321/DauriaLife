@@ -7,7 +7,7 @@ import os, shutil
 
 #Setup
 try: os.system('pip install -r requirements.txt')
-except: os.system('pip install -r Backend/requirements.txt')
+except: None
 
 #Make folders
 LOCATION = os.getcwd()
