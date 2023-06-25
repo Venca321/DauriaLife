@@ -11,8 +11,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.11
-      - name: cd Backend
-        run: cd Backend/
       - name: Set secrets
         run: |
           echo "OPEN_WEATHER_API_KEY=${{ secrets.OPEN_WEATHER_API_KEY }}" >> $GITHUB_ENV
@@ -21,7 +19,7 @@ jobs:
           echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" >> $GITHUB_ENV
           echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> $GITHUB_ENV
       - name: Upgrade pip
-        run: pip install --upgrade pip
+        run: cd Backend & pip install --upgrade pip
       - name: Run custom installer
         run: python3 installer.py
       - name: Run pytest
