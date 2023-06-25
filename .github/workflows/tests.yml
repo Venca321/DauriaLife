@@ -19,9 +19,9 @@ jobs:
           echo "DATABASE_USER=${{ secrets.DATABASE_USER }}" >> $GITHUB_ENV
           echo "DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}" >> $GITHUB_ENV
       - name: Upgrade pip
-        run: cd Backend & pip install --upgrade pip
+        run: pip install --upgrade pip
       - name: Run custom installer
-        run: python3 installer.py
+        run: cd Backend & python3 installer.py
       - name: Run pytest
         run: pytest
       
