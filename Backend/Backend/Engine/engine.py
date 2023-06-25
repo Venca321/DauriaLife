@@ -3,7 +3,7 @@
 Engine module for the smart callendar system
 """
 
-from Backend.core import *
+from Backend.core_helper import *
 
 class Data_loader():
     def user_type():

@@ -1,0 +1,23 @@
+services:
+  frontend:
+    container_name: frontend
+    build: Frontend/
+    restart: unless-stopped
+    ports:
+      - 5001:5001
+    networks:
+      - daurialife
+
+  backend:
+    container_name: backend
+    build: Backend/
+    restart: unless-stopped
+    ports:
+      - 5002:5002
+    networks:
+      - daurialife
+
+networks:
+  daurialife:
+    attachable: true
+    name: daurialife

@@ -1,6 +1,6 @@
 
 from Backend.core_helper import *
-import time, requests, mysql.connector
+import time, requests, mysql.connector, socket
 
 class Core():
     def outputer(output:bool, ON:bool, name:str, function):
@@ -49,27 +49,9 @@ class Tests():
         """
         Test flask server
         """
-        url = 'http://localhost:5000/api/version'
+        url = 'http://0.0.0.0:5002/api/version'
         r = requests.get(url)
         if not r.json()["version"] == Data.System.version: raise
-
-    def sveltekit():
-        """
-        Test sveltekit server
-        """
-        url = 'http://localhost:5173/api/status'
-        r = requests.get(url)
-        if not r.json()["status"] == "ok": raise
-
-    def overall():
-        """
-        Test overall server
-        """
-        """
-        r = requests.get(f"{ngrok_url}/api/status")
-        if not r.json()["status"] == "ok": raise
-        """
-        pass
 
     def run(output:bool = False):
         """
@@ -77,10 +59,8 @@ class Tests():
         """
         DATABASE = True #if False test will be skipped
         FLASK = True
-        SVELTEKIT = True
-        OVERALL = False
 
-        time.sleep(0.5)
+        time.sleep(0.75)
 
         errors, done_tests = 0, 0
         start = time.time()
@@ -97,23 +77,15 @@ class Tests():
             errors += 1
         done_tests += 1
 
-        #Sveltekit
-        if not Core.outputer(output, SVELTEKIT, "Sveltekit server", "Tests.sveltekit()"):
-            errors += 1
-        done_tests += 1
-
-        #Overall
-        if not Core.outputer(output, OVERALL, "Overall server", "Tests.overall()"):
-            errors += 1
-        done_tests += 1
-
+        hostname = socket.gethostname()
+        IP = socket.gethostbyname(hostname)
         if output: 
             print(f"\n Run {done_tests} tests in {int((time.time()-start)*1000)/1000}s")
             if errors == 0: 
                 print(f" {colors.BOLD}Status:{colors.NORMAL} {colors.OK}OK{colors.NORMAL}")
                 print("\n---------------------------------------------------------------------------------------\n")
                 time.sleep(0.1)
-                print(f" {colors.BOLD}Sveltekit running on{colors.NORMAL} ........ {colors.OK}http://localhost:5173/{colors.NORMAL}")
+                print(f" {colors.BOLD}RestAPI running on{colors.NORMAL} ........ {colors.OK}http://{IP}:5002/api{colors.NORMAL}")
                 print("\n---------------------------------------------------------------------------------------\n")
 
             else: print(f" {colors.BOLD}Status:{colors.NORMAL} {colors.ERROR}System error ({errors}){colors.NORMAL}\n")
