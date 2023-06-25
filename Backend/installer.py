@@ -35,5 +35,5 @@ def install():
 if __name__ == "__main__":
     try: install()
     except:
-        os.chdir("/Backend")
+        os.chdir("Backend")
         install()
