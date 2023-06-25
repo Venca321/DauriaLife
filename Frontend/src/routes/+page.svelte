@@ -1,16 +1,16 @@
 
 <body>
     <div id="container">
-        <section id="dashboard">
-            <p>Dashboard</p>
+        <section id="calendar">
+            <p>Calendář</p>
         </section>
 
-        <section id="automation">
-            <p>Automatizace</p>
+        <section id="todos">
+            <p>To do list</p>
         </section>
 
-        <section id="control">
-            <p>Test</p>
+        <section id="notes">
+            <p>Poznámky</p>
         </section>
 
         <style>
@@ -38,15 +38,15 @@
         display: flex;
     }
     
-    #dashboard {
+    #calendar {
         background-color: #ffcc00;
     }
 
-    #automation {
+    #todos {
         background-color: #00ccff;
     }
 
-    #control {
+    #notes {
         background-color: #cc00cc;
     }
 </style>
