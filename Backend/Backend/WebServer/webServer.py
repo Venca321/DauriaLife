@@ -11,6 +11,10 @@ CORS(app)
 def flask_task():
     serve(app, host="0.0.0.0", port=5002)
 
+@app.route("/api/status", methods=["GET"])
+def status():
+    return jsonify(status="ok")
+
 @app.route("/api/version", methods=["GET"])
 def version():
     return jsonify(version=Data.System.version, db_version=Data.Database.version)
