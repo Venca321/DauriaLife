@@ -6,7 +6,8 @@ Creates all needed (installs requerements, creates folders...)
 import os, shutil
 
 #Setup
-os.system('pip install -r requirements.txt')
+try: os.system('pip install -r requirements.txt')
+except: os.system('pip install -r Backend/requirements.txt')
 
 #Make folders
 LOCATION = os.getcwd()

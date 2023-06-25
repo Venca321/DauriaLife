@@ -21,7 +21,7 @@ jobs:
       - name: Upgrade pip
         run: pip install --upgrade pip
       - name: Run custom installer
-        run: cd Backend & python3 installer.py
+        run: python3 Backend/installer.py
       - name: Run pytest
         run: pytest
       
