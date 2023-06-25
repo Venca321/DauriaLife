@@ -5,10 +5,7 @@ Pytest for Backend/core_helper.py
 
 import sys, os
 sys.path.append(f"{os.getcwd()}") #Importing from "Backend/" fix
-try:
-    from Backend.core_helper import *
-except:
-    from Backend.Backend.core_helper import *
+from Backend.core_helper import *
 
 class Test_loaded_data():
     def test_system(self):

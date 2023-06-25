@@ -23,5 +23,5 @@ jobs:
       - name: Run custom installer
         run: python3 Backend/installer.py
       - name: Run pytest
-        run: pytest
+        run: cd Backend && pytest
       
