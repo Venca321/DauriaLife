@@ -8,8 +8,7 @@ from waitress import serve
 DOMAIN = Data.Settings.domain
 
 app = Flask(__name__)
-app.secret_key = b'\x9d\x97Leel\xe1\x15o\xd9:\xe8'
-CORS(app, CORS(app, origins="http://localhost:5001"))
+CORS(app, resources={r"/api/*": {"origins": "http://127.0.0.1:5001"}})
 
 def flask_task():
     serve(app, host="0.0.0.0", port=5002)
