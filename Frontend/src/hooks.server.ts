@@ -1,15 +1,19 @@
 import type { Handle } from "@sveltejs/kit"
 
-export const handle: Handle = async ({event, resolve}) => {
+export const handle: Handle = async ({event, resolve }) => {
     const session = event.cookies.get("session")
+    const lang = event.params.lang || 'cz';
 
     if (!session){
         return await resolve(event)
     }
 
-    const response = await fetch('http://localhost:5002/api/session_login', {
+    const response = await fetch(`http://127.0.0.1:5002/api/user/auth/login`, {
         method: 'POST',
-        body: JSON.stringify({"session_token": session})
+        body: JSON.stringify({"lang": lang, "session_token": session}),
+        headers: {
+            'Content-Type': 'application/json'
+        }
     });
     const data = await response.json();
 
@@ -27,7 +31,7 @@ export const handle: Handle = async ({event, resolve}) => {
     if (user){
         event.locals.user = user
 
-        try{
+        /*try{
             const response2 = await fetch('http://localhost:5002/api/user/settings/get', {
                 method: 'POST',
                 body: JSON.stringify({"id": user.id})
@@ -39,7 +43,7 @@ export const handle: Handle = async ({event, resolve}) => {
 
             event.locals.settings = settings
         }
-        catch{}
+        catch{}*/
     }
 
     return await resolve(event)

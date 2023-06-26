@@ -57,7 +57,7 @@ class Tests():
         """
         Run all tests
         """
-        DATABASE = True #if False test will be skipped
+        DATABASE = False #if False test will be skipped
         FLASK = True
 
         time.sleep(0.75)

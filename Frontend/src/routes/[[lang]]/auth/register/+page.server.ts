@@ -1,21 +1,31 @@
 import { redirect, type Actions } from "@sveltejs/kit";
 
 export const actions: Actions = {
-    register: async ({ cookies, request }) => {
+    register: async ({ cookies, request, params }) => {
         const formData = await request.formData();
+        const name = String(formData.get("name"));
         const username = String(formData.get("username"));
         const email = String(formData.get("email"));
         const password = String(formData.get("password"));
         const repeat_password = String(formData.get("password2"));
+        const lang = params.lang || 'cz';
 
-        const response = await fetch('http://localhost:5002/api/register', {
+        if(password != repeat_password){
+            return;
+        }
+
+        const response = await fetch('http://127.0.0.1:5002/api/user/auth/register', {
             method: 'POST',
             body: JSON.stringify({
+                "lang": lang,
+                "name": name,
                 "username": username, 
                 "email": email,
-                "password": password,
-                "repeat_password": repeat_password
-            })
+                "password": password
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
         
         const data = await response.json();

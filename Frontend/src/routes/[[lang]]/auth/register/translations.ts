@@ -2,6 +2,7 @@ export default {
     cz: {
       "title": "Registrace",
       "back": "Zpět",
+      "name": "Jméno",
       "username": "Uživatelské jméno",
       "email": "Email",
       "password": "Heslo",
@@ -13,6 +14,7 @@ export default {
     en: {
       "title": "Registration",
       "back": "Back",
+      "name": "Name",
       "username": "Username",
       "email": "Email",
       "password": "Password",

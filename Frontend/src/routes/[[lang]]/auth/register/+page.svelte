@@ -22,6 +22,10 @@
     </div>
     <div id="login">
         <form method="POST" action="?/register" autocomplete="off">
+            <label for="name">{langset["name"]}</label>
+            <br>
+            <input type="text" name="name" placeholder="Honza Novák" required>
+            <br>
             <label for="username">{langset["username"]}</label>
             <br>
             <input type="text" name="username" placeholder="User123" required>
