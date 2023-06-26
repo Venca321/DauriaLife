@@ -14,7 +14,7 @@ export const actions: Actions = {
             return;
         }
 
-        const response = await fetch('http://127.0.0.1:5002/api/user/auth/register', {
+        const response = await fetch('http://backend:5002/api/user/auth/register', {
             method: 'POST',
             body: JSON.stringify({
                 "lang": lang,

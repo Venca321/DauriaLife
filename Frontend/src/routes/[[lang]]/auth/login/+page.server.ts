@@ -7,7 +7,7 @@ export const actions: Actions = {
         const password = String(formData.get("password"));
         const lang = params.lang || 'cz';
 
-		const response = await fetch("http://127.0.0.1:5002/api/user/auth/sign_in", {
+		const response = await fetch("http://backend:5002/api/user/auth/sign_in", {
             method: 'POST',
             body: JSON.stringify({"lang": lang, "username_or_email": username_or_email, "password": password}),
             headers: {

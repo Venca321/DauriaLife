@@ -8,7 +8,7 @@ export const handle: Handle = async ({event, resolve }) => {
         return await resolve(event)
     }
 
-    const response = await fetch(`http://127.0.0.1:5002/api/user/auth/login`, {
+    const response = await fetch(`http://backend:5002/api/user/auth/login`, {
         method: 'POST',
         body: JSON.stringify({"lang": lang, "session_token": session}),
         headers: {
