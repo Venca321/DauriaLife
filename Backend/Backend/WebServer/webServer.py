@@ -9,10 +9,16 @@ DOMAIN = Data.Settings.domain
 
 app = Flask(__name__)
 app.secret_key = b'\x9d\x97Leel\xe1\x15o\xd9:\xe8'
-cors = CORS(app, resources={r"/*": {"origins": f"http://{DOMAIN}"}})
+CORS(app, resources={r"/*": {"origins": f"http://{DOMAIN}"}})
 
 def flask_task():
     serve(app, host="0.0.0.0", port=5002)
+
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'  # Povolí přístup z jakéhokoli zdroje
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    return response
 
 @app.route("/api/status", methods=["GET"])
 def status():
