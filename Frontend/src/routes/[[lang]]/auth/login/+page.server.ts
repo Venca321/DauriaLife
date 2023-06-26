@@ -1,4 +1,5 @@
 import { redirect, type Actions } from "@sveltejs/kit";
+import settings from "../../../../settings"
 
 export const actions: Actions = {
     login: async ({ cookies, request, params }) => {
@@ -7,7 +8,7 @@ export const actions: Actions = {
         const password = String(formData.get("password"));
         const lang = params.lang || 'cz';
 
-		const response = await fetch("http://backend:5002/api/user/auth/sign_in", {
+		const response = await fetch(`http://${settings.backend.ip}:${settings.backend.port}/api/user/auth/sign_in`, {
             method: 'POST',
             body: JSON.stringify({"lang": lang, "username_or_email": username_or_email, "password": password}),
             headers: {

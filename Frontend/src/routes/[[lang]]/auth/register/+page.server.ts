@@ -1,4 +1,5 @@
 import { redirect, type Actions } from "@sveltejs/kit";
+import settings from "../../../../settings"
 
 export const actions: Actions = {
     register: async ({ cookies, request, params }) => {
@@ -14,7 +15,7 @@ export const actions: Actions = {
             return;
         }
 
-        const response = await fetch('http://backend:5002/api/user/auth/register', {
+        const response = await fetch(`http://${settings.backend.ip}:${settings.backend.port}/api/user/auth/register`, {
             method: 'POST',
             body: JSON.stringify({
                 "lang": lang,

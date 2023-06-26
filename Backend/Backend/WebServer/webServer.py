@@ -5,9 +5,11 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from waitress import serve
 
+DOMAIN = Data.Settings.domain
+
 app = Flask(__name__)
 app.secret_key = b'\x9d\x97Leel\xe1\x15o\xd9:\xe8'
-CORS(app)
+CORS(app, origins=[f'http://{DOMAIN}', f'https://{DOMAIN}'])
 
 def flask_task():
     serve(app, host="0.0.0.0", port=5002)

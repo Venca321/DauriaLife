@@ -1,4 +1,5 @@
 import type { Handle } from "@sveltejs/kit"
+import settings from "./settings"
 
 export const handle: Handle = async ({event, resolve }) => {
     const session = event.cookies.get("session")
@@ -8,7 +9,7 @@ export const handle: Handle = async ({event, resolve }) => {
         return await resolve(event)
     }
 
-    const response = await fetch(`http://backend:5002/api/user/auth/login`, {
+    const response = await fetch(`http://${settings.backend.ip}:${settings.backend.port}/api/user/auth/login`, {
         method: 'POST',
         body: JSON.stringify({"lang": lang, "session_token": session}),
         headers: {
