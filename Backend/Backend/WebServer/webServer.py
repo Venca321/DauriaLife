@@ -9,7 +9,7 @@ DOMAIN = Data.Settings.domain
 
 app = Flask(__name__)
 app.secret_key = b'\x9d\x97Leel\xe1\x15o\xd9:\xe8'
-CORS(app, origins=[f'http://{DOMAIN}', f'https://{DOMAIN}'])
+cors = CORS(app, resources={r"/*": {"origins": f"http://{DOMAIN}"}})
 
 def flask_task():
     serve(app, host="0.0.0.0", port=5002)
