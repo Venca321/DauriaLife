@@ -202,7 +202,7 @@
         scroll-margin-top: 10vh;
         max-width: 70%;
         position: absolute;
-        top: 300vh;
+        top: 200vh;
         left: 10%;
     }
 
@@ -210,14 +210,14 @@
         scroll-margin-top: 10vh;
         max-width: 70%;
         position: absolute;
-        top: 475vh;
+        top: 275vh;
         left: 10%;
     }
 
     #end {
         position: absolute;
         text-align: center;
-        top: 650vh;
+        top: 350vh;
         left: 0;
         width: 100%;
         height: 20vh;
@@ -244,6 +244,22 @@
 
         p {
             font-size: 15px;
+        }
+
+        #project {
+            top: 125vh;
+        }
+
+        #team {
+            top: 300vh;
+        }
+
+        #contact {
+            top: 475vh;
+        }
+
+        #end {
+            top: 650vh;
         }
 
         #end h2 {
