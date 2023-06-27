@@ -6,11 +6,11 @@
 
 <style>
 	:global(:root) {
-		--primary: #444444;
+		--primary: #323232;
 		--on-primary: #F5F5F5;
-		--secondary: #323232;
-		--on-secondary: #E8E8E8;
-		--tertiary: #FFB800;
-		--on-tertiary: #363636;
+		--secondary: #FFB800;
+		--on-secondary: #323232;
+		--tertiary: #202020;
+		--on-tertiary: #E8E8E8;
 	}
 </style>

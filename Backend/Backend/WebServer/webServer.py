@@ -5,8 +5,6 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from waitress import serve
 
-DOMAIN = Data.Settings.domain
-
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://127.0.0.1:5001"}})
 
@@ -85,3 +83,4 @@ def user_auth_register():
             return jsonify(error=session_token[0], message=session_token[1])
     
     return jsonify(error=user[0], message=user[1])
+
