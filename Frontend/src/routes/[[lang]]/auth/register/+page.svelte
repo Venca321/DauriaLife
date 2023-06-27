@@ -1,11 +1,16 @@
 <script>
-    import { goto } from "$app/navigation";
+    import { browser } from '$app/environment'
     import translations from "./translations";
 
     export let data;
     const lang = data.lang
     // @ts-ignore
     const langset = translations[lang]
+
+    var mobile = true;
+    if (browser) {
+        mobile = (innerWidth <= 800);
+    }
 </script>
 
 <svelte:head>
@@ -181,9 +186,10 @@
     }
 
     #register form p {
+        position: relative;
         color: var(--on-tertiary);
-        right: 25%;
-        transform: translate(25%, 0);
+        right: 30%;
+        transform: translate(50%, 0);
     }
 
     #register form p a {
@@ -196,15 +202,15 @@
     }
 
     #register form div {
-        right: 25%;
-        margin-left: -5px;
+        position: relative;
+        right: 28%;
         margin-top: -2vh;
-        transform: translate(25%, 0);
+        transform: translate(50%, 0);
     }
 
     #register form button {
-        width: 8vw;
-        height: 4vh;
+        width: 110px;
+        height: 32px;
         margin-left: 1.5vw;
         color: var(--on-secondary);
         background-color: var(--secondary);
@@ -215,7 +221,7 @@
     }
 
     #back-button {
-        padding: 0.95vh 3vw 0.9vh 3vw;
+        padding: 8px 40px 8px 40px;
         color: var(--on-primary);
         background-color: var(--tertiary);
         border: var(--on-primary) 1px solid;

@@ -1,10 +1,16 @@
 <script>
     // @ts-nocheck
+    import { browser } from '$app/environment'
     import translations from "./translations";
 
     export let data;
     const lang = data.lang
     const langset = translations[lang]
+
+    var mobile = true;
+    if (browser) {
+        mobile = (innerWidth <= 800);
+    }
 </script>
 
 <svelte:head>
@@ -13,7 +19,6 @@
 </svelte:head>
 
 <main>
-
     <header id="navbar">
         <a href="/{lang}"><img src="/images/DauriaLife.png" alt="DariaLife.png"></a>
         <div id="centered">
@@ -131,7 +136,7 @@
 
     #login {
         position: absolute;
-        top: 12vh;
+        top: 24vh;
         left: 80%;
         transform: translate(-80%, 0);
     }
@@ -142,7 +147,7 @@
         font-size: 36px;
         font-weight: 300;
         border-bottom: 3px solid var(--secondary);
-        margin-bottom: 18vh;
+        margin-bottom: 6vh;
     }
 
     #login form {
@@ -171,11 +176,11 @@
     }
 
     #login form p {
+        position: relative;
         margin-top: 3vh;
-        margin-left: -0.5vw;
-        right: 25%;
+        right: 30%;
         color: var(--on-tertiary);
-        transform: translate(25%, 0);
+        transform: translate(50%, 0);
     }
 
     #login form p a {
@@ -188,16 +193,15 @@
     }
 
     #login form div {
-        right: 25%;
-        margin-left: -5px;
+        position: relative;
+        right: 28%;
         margin-top: -2vh;
-        transform: translate(25%, 0);
+        transform: translate(50%, 0);
     }
 
     #login form button {
-        width: 8vw;
-        height: 4vh;
-        margin-left: 3vw;
+        width: 110px;
+        height: 32px;
         color: var(--on-secondary);
         background-color: var(--secondary);
         border: none;
@@ -207,7 +211,8 @@
     }
 
     #back-button {
-        padding: 0.95vh 3vw 0.9vh 3vw;
+        padding: 8px 40px 8px 40px;
+        margin-right: 3vw;
         color: var(--on-primary);
         background-color: var(--tertiary);
         border: var(--on-primary) 1px solid;
@@ -215,4 +220,6 @@
         font-size: 14px;
         transition: 0.15s;
     }
+
+
 </style>

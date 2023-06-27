@@ -1,5 +1,6 @@
 <script>
     // @ts-nocheck
+    import { browser } from '$app/environment'
     import translations from "./translations";
 
     export let data;
@@ -29,7 +30,11 @@
         }
     }
 
-    window.addEventListener("scroll", reveal);
+    var mobile = true;
+    if (browser) {
+        window.addEventListener("scroll", reveal);
+        mobile = (innerWidth <= 800);
+    }
 </script>
 
 <svelte:head>
@@ -107,8 +112,8 @@
 
     #centered {
         position: absolute;
-        left: 51%;
-        transform: translate(-51%, 0);
+        left: 50%;
+        transform: translate(-50%, 0);
     }
 
     #centered a {
@@ -146,7 +151,7 @@
         position: absolute;
         width: max-content;
         max-width: 55%;
-        top: 27.5vh;
+        top: 30vh;
         left: 50%;
         transform: translate(-50%, 0);
         text-align: center;
