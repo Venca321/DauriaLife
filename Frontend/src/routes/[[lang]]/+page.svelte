@@ -1,5 +1,6 @@
 <script>
     // @ts-nocheck
+    import Navbar from "$lib/Navbar.svelte";
     import { browser } from '$app/environment'
     import translations from "./translations";
 
@@ -42,15 +43,7 @@
     <meta name="author" content="DauriaLife" />
 </svelte:head>
 
-<header id="navbar">
-    <a href="/{lang}"><img src="/images/DauriaLife.png" alt="DariaLife.png"></a>
-    <div id="centered">
-        <a href="/{lang}#project">{langset["about_project"]}</a>
-        <a href="/{lang}#team">{langset["about_us"]}</a>
-        <a href="/{lang}#contact">{langset["contact"]}</a>
-    </div>
-    <a id="lang-button">{lang.toUpperCase()}</a>
-</header>
+<Navbar lang={lang} langset={langset}/>
 
 <div id="picture">
     <img src="/images/calendar.png" alt="calendar.png">
@@ -66,66 +59,66 @@
 
 <section id="project" class="reveal">
     <h1>{langset["about_project"]}</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt non, sapiente reiciendis debitis 
+        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
+        ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Deserunt non, sapiente reiciendis debitis 
+        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
+        ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Deserunt non, sapiente reiciendis debitis 
+        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
+        ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Deserunt non, sapiente reiciendis debitis 
+        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
+        ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Deserunt non, sapiente reiciendis debitis 
+        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
+        ducimus facilis, reprehenderit laborum delectus?</p>
 </section>
 
 <section id="team" class="reveal">
     <h1>{langset["about_us"]}</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt non, sapiente reiciendis debitis 
+        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
+        ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Deserunt non, sapiente reiciendis debitis 
+        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
+        ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Deserunt non, sapiente reiciendis debitis 
+        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
+        ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Deserunt non, sapiente reiciendis debitis 
+        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
+        ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Deserunt non, sapiente reiciendis debitis 
+        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
+        ducimus facilis, reprehenderit laborum delectus?</p>
 </section>
 
 <section id="contact" class="reveal">
     <h1>{langset["contact"]}</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt non, sapiente reiciendis debitis 
+        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
+        ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Deserunt non, sapiente reiciendis debitis 
+        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
+        ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Deserunt non, sapiente reiciendis debitis 
+        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
+        ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Deserunt non, sapiente reiciendis debitis 
+        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
+        ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Deserunt non, sapiente reiciendis debitis 
+        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
+        ducimus facilis, reprehenderit laborum delectus?</p>
 </section>
 
 <section id="end">
+    <h2>Václav Parma 2023</h2>
 </section>
 
 <style>
-    #navbar {
-        position: fixed;
-        z-index: 9999;
-        top: 0px;
-        left: 0px;
-        width: 100%;
-        display: inline-flex;
-        align-items: center;
-        transition: 0.25s;
-    }
-
-    #navbar a {
-        color: #ffffff;
-        text-decoration: none;
-        font-size: 18px;
-        transition: 0.15s;
-    }
-
-    #navbar a:hover {
-        color: var(--secondary);
-        text-decoration: underline;
-    }
-
-    #navbar img {
-        height: 32px;
-        margin-left: 2vw;
-        margin-top: 1.5vh;
-        margin-bottom: 0.5vh;
-    }
-
-    #centered {
-        position: absolute;
-        left: 50%;
-        transform: translate(-50%, 0);
-    }
-
-    #centered a {
-        margin-right: 4vw;
-    }
-
-    #lang-button {
-        position: absolute;
-        left: 97%;
-        transform: translate(-97%, 0);
-    }
-    
     #picture {
         position: absolute;
         top: 20vh;
@@ -187,14 +180,21 @@
     }
 
     section h1 {
+        width: fit-content;
         font-size: 48px;
         color: #ffffff;
         margin-bottom: 5vh;
         border-bottom: var(--secondary) 1px solid;
     }
 
+    p {
+        color: var(--on-primary);
+        margin-left: 10%;
+    }
+
     #project {
         scroll-margin-top: 10vh;
+        max-width: 70%;
         position: absolute;
         top: 125vh;
         left: 10%;
@@ -202,24 +202,32 @@
 
     #team {
         scroll-margin-top: 10vh;
+        max-width: 70%;
         position: absolute;
-        top: 225vh;
+        top: 200vh;
         left: 10%;
     }
 
     #contact {
         scroll-margin-top: 10vh;
+        max-width: 70%;
         position: absolute;
-        top: 325vh;
+        top: 275vh;
         left: 10%;
     }
 
     #end {
         position: absolute;
-        top: 425vh;
+        text-align: center;
+        top: 375vh;
         left: 0;
         width: 100%;
         height: 20vh;
         background-color: var(--tertiary);
+    }
+
+    #end h2 {
+        margin-top: 8vh;
+        color: var(--on-tertiary);
     }
 </style>
