@@ -12,7 +12,7 @@ export default {
       "haveaccount": "Již máte účet? Přejděte k ",
       "back": "Zpět",
       "login": "přihlášení",
-      "register": "Registrovat se",
+      "register": "Registrovat",
     },
     en: {
       "title": "Registration",

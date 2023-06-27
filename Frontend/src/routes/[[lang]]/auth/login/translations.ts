@@ -8,7 +8,7 @@ export default {
       "password": "Heslo",
       "noaccount": "Ještě nemáte účet? Přejděte k ",
       "back": "Zpět",
-      "login": "Přihlásit se",
+      "login": "Přihlásit",
       "registration": "registraci",
     },
     en: {

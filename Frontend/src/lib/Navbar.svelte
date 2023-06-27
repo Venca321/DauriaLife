@@ -85,7 +85,6 @@
         color: var(--on-tertiary);
         text-decoration: none;
         transition: 0.15s;
-        padding: 10px 10px 10px 10px;
     }
 
     #dropdown a:hover {

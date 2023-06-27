@@ -130,8 +130,8 @@
     #register form p {
         position: relative;
         color: var(--on-tertiary);
-        right: 30%;
-        transform: translate(50%, 0);
+        margin-left: auto;
+        margin-right: auto;
     }
 
     #register form p a {
@@ -145,9 +145,9 @@
 
     #register form div {
         position: relative;
-        right: 28%;
         margin-top: -2vh;
-        transform: translate(50%, 0);
+        margin-left: auto;
+        margin-right: auto;
     }
 
     #register form button {
@@ -204,7 +204,6 @@
 
         #register form p {
             max-width: 75%;
-            margin-left: 6vw;
         }
 
         #register form div {

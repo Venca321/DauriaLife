@@ -66,12 +66,7 @@
         Deserunt non, sapiente reiciendis debitis 
         laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
         ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-        Deserunt non, sapiente reiciendis debitis 
-        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
-        ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-        Deserunt non, sapiente reiciendis debitis 
-        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
-        ducimus facilis, reprehenderit laborum delectus?</p>
+        Deserunt non, sapiente reiciendis debitis</p>
 </section>
 
 <section id="team" class="reveal">
@@ -85,12 +80,7 @@
         Deserunt non, sapiente reiciendis debitis 
         laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
         ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-        Deserunt non, sapiente reiciendis debitis 
-        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
-        ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-        Deserunt non, sapiente reiciendis debitis 
-        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
-        ducimus facilis, reprehenderit laborum delectus?</p>
+        Deserunt non, sapiente reiciendis debitis</p>
 </section>
 
 <section id="contact" class="reveal">
@@ -104,12 +94,7 @@
         Deserunt non, sapiente reiciendis debitis 
         laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
         ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-        Deserunt non, sapiente reiciendis debitis 
-        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
-        ducimus facilis, reprehenderit laborum delectus? Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-        Deserunt non, sapiente reiciendis debitis 
-        laudantium odit animi molestias! Illo tempore natus laudantium est voluptatem, laboriosam, blanditiis 
-        ducimus facilis, reprehenderit laborum delectus?</p>
+        Deserunt non, sapiente reiciendis debitis</p>
 </section>
 
 <section id="end">
@@ -251,15 +236,15 @@
         }
 
         #team {
-            top: 300vh;
+            top: 265vh;
         }
 
         #contact {
-            top: 475vh;
+            top: 405vh;
         }
 
         #end {
-            top: 650vh;
+            top: 545vh;
         }
 
         #end h2 {

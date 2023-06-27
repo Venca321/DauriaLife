@@ -118,9 +118,9 @@
     #login form p {
         position: relative;
         margin-top: 3vh;
-        right: 30%;
+        margin-left: auto;
+        margin-right: auto;
         color: var(--on-tertiary);
-        transform: translate(50%, 0);
     }
 
     #login form p a {
@@ -133,10 +133,9 @@
     }
 
     #login form div {
-        position: relative;
-        right: 28%;
+        margin-left: auto;
+        margin-right: auto;
         margin-top: -2vh;
-        transform: translate(50%, 0);
     }
 
     #login form button {
@@ -191,7 +190,6 @@
 
         #login form p {
             max-width: 70%;
-            margin-left: 7vw;
         }
 
         #login form div {
