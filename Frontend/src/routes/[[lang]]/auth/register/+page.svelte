@@ -1,17 +1,11 @@
 <script>
     import Navbar from "$lib/Navbar.svelte";
-    import { browser } from '$app/environment'
     import translations from "./translations";
 
     export let data;
     const lang = data.lang
     // @ts-ignore
     const langset = translations[lang]
-
-    var mobile = true;
-    if (browser) {
-        mobile = (innerWidth <= 800);
-    }
 </script>
 
 <svelte:head>
@@ -176,5 +170,56 @@
         border-radius: 5px;
         font-size: 14px;
         transition: 0.15s;
+    }
+
+    @media screen and (max-device-width: 800px){
+        #register-box {
+            left: 0%;
+            width: 100%;
+        }
+
+        #register {
+            top: 8vh;
+            left: 70vw;
+            width: 75vw;
+        }
+
+        #register h1 {
+            font-size: 26px;
+            margin-bottom: 4vh;
+        }
+
+        #register form {
+            margin-left: 6%;
+        }
+
+        #register form label {
+            font-size: 14px;
+        }
+
+        #register form input {
+            width: 65vw;
+            margin-bottom: 12px;
+        }
+
+        #register form p {
+            max-width: 75%;
+            margin-left: 6vw;
+        }
+
+        #register form div {
+            width: max-content;
+        }
+
+        #register form button {
+            width: 84px;
+            height: 28px;
+            font-size: 12px;
+        }
+
+        #back-button {
+            padding: 7px 28px 7px 28px;
+            font-size: 12px;
+        }
     }
 </style>

@@ -1,17 +1,11 @@
 <script>
     // @ts-nocheck
     import Navbar from "$lib/Navbar.svelte";
-    import { browser } from '$app/environment'
     import translations from "./translations";
 
     export let data;
     const lang = data.lang
     const langset = translations[lang]
-
-    var mobile = true;
-    if (browser) {
-        mobile = (innerWidth <= 800);
-    }
 </script>
 
 <svelte:head>
@@ -167,5 +161,52 @@
         transition: 0.15s;
     }
 
+    @media screen and (max-device-width: 800px){
+        #login-box {
+            left: 0%;
+            width: 100%;
+        }
 
+        #login {
+            top: 12vh;
+            left: 70vw;
+            width: 75vw;
+        }
+
+        #login h1 {
+            font-size: 26px;
+        }
+
+        #login form {
+            margin-left: 6%;
+        }
+
+        #login form label {
+            font-size: 14px;
+        }
+
+        #login form input {
+            width: 65vw;
+        }
+
+        #login form p {
+            max-width: 70%;
+            margin-left: 7vw;
+        }
+
+        #login form div {
+            width: max-content;
+        }
+
+        #login form button {
+            width: 80px;
+            height: 28px;
+            font-size: 12px;
+        }
+
+        #back-button {
+            padding: 7px 26px 7px 26px;
+            font-size: 12px;
+        }
+    }
 </style>

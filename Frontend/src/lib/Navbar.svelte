@@ -1,5 +1,7 @@
 
 <script lang="ts">
+    import { browser } from '$app/environment'
+
     export let lang:string;
     export let langset:any;
     export let location:string = "";
@@ -8,15 +10,22 @@
 	function clickHandler() {
 		isExpanded = !isExpanded;
 	}
+
+    var mobile = true;
+    if (browser) {
+        mobile = (innerWidth <= 800);
+    }
 </script>
 
 <header id="navbar">
     <a href="/{lang}"><img src="/images/DauriaLife.png" alt="DariaLife.png"></a>
-    <div id="centered">
-        <a href="/{lang}#project">{langset["about_project"]}</a>
-        <a href="/{lang}#team">{langset["about_us"]}</a>
-        <a href="/{lang}#contact">{langset["contact"]}</a>
-    </div>
+    {#if !mobile}
+        <div id="centered">
+            <a href="/{lang}#project">{langset["about_project"]}</a>
+            <a href="/{lang}#team">{langset["about_us"]}</a>
+            <a href="/{lang}#contact">{langset["contact"]}</a>
+        </div>
+    {/if}
     <button id="lang-button" on:click={clickHandler}>{lang.toUpperCase()}</button>
 </header>
 
@@ -109,5 +118,22 @@
     #lang-button:hover {
         color: var(--secondary);
         text-decoration: underline;
+    }
+
+    @media screen and (max-device-width: 800px){
+        #navbar img {
+            position: relative;
+            height: 18px;
+            margin-left: 20%;
+        }
+
+        #lang-button {
+            left: 90%;
+        }
+
+        #dropdown {
+            top: 1.25vh;
+            right: 5vw;
+        }
     }
 </style>

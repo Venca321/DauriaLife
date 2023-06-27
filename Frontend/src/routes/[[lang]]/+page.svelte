@@ -31,10 +31,8 @@
         }
     }
 
-    var mobile = true;
     if (browser) {
         window.addEventListener("scroll", reveal);
-        mobile = (innerWidth <= 800);
     }
 </script>
 
@@ -204,7 +202,7 @@
         scroll-margin-top: 10vh;
         max-width: 70%;
         position: absolute;
-        top: 200vh;
+        top: 300vh;
         left: 10%;
     }
 
@@ -212,14 +210,14 @@
         scroll-margin-top: 10vh;
         max-width: 70%;
         position: absolute;
-        top: 275vh;
+        top: 475vh;
         left: 10%;
     }
 
     #end {
         position: absolute;
         text-align: center;
-        top: 375vh;
+        top: 650vh;
         left: 0;
         width: 100%;
         height: 20vh;
@@ -229,5 +227,27 @@
     #end h2 {
         margin-top: 8vh;
         color: var(--on-tertiary);
+    }
+
+    @media screen and (max-device-width: 800px){
+        #main-text {
+            max-width: 80%;
+        }
+
+        #main-text h1 {
+            font-size: 26px;
+        }
+
+        section h1 {
+            font-size: 26px;
+        }
+
+        p {
+            font-size: 15px;
+        }
+
+        #end h2 {
+            font-size: 18px;
+        }
     }
 </style>
