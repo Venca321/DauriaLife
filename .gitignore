@@ -3,7 +3,7 @@ __pycache__
 cache/
 .pytest_cache/
 .vscode/
-Working/
+working/
 WeatherData/
 temp-*
 .env

@@ -187,7 +187,7 @@
         scroll-margin-top: 10vh;
         max-width: 70%;
         position: absolute;
-        top: 200vh;
+        top: 185vh;
         left: 10%;
     }
 
@@ -195,14 +195,14 @@
         scroll-margin-top: 10vh;
         max-width: 70%;
         position: absolute;
-        top: 275vh;
+        top: 245vh;
         left: 10%;
     }
 
     #end {
         position: absolute;
         text-align: center;
-        top: 350vh;
+        top: 335vh;
         left: 0;
         width: 100%;
         height: 20vh;
